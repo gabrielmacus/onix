@@ -116,6 +116,12 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
         $Class = get_class($this);
         $base = new $Class();
 
+        foreach ($base as $k=>$v)
+        {
+            unset($base[$k]);
+        }
+
+
         foreach ($array as $k=>$v)
         {
             if($k == "_id")

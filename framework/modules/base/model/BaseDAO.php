@@ -119,22 +119,18 @@ class BaseDAO implements IDAO
 
         $base->beforeUpdate();
 
-        $data =  $base->jsonSerialize() + $itemToUpdate ;
+        $data =  $base->jsonSerialize();
 
         unset($data["_id"]);
 
         $data  = ['$set'=> $data];
-
 
         if(!$collection->update(["_id"=>$id],$data ))
         {
             throw new \Exception("update",500);
         }
 
-
-
         $base->afterUpdate();
-
 
     }
 

@@ -14,6 +14,11 @@ class BaseLang
 {
     use  Magic;
     protected $language;
+    /**
+     * Multilingual words array
+     * @var
+     */
+    protected $langArray = [];
 
     /**
      * BaseLang constructor.
@@ -26,26 +31,30 @@ class BaseLang
     }
 
 
+    /**
+     * Gets the words array, corresponding to selected language
+     *
+     * @return array
+     * @throws \Exception
+     */
     public function langArray()
     {
 
-        $langArr=
-            [
-
-                "es"=>
-                [
-                    "noresults"=> "Sin resultados para mostrar"
-                ]
-
-            ];
+        /**
+         * Español
+         */
+        $this->langArray["es"]["noresults"] = "Sin resultados para mostrar";
+        $this->langArray["es"]["noresults"] = "Fecha de modificicación";
+        $this->langArray["es"]["noresults"] = "Fecha de creación";
 
 
-        if(empty($langArr[$this->language]))
+        if(empty($this->langArray[$this->language]))
         {
             throw new \Exception("languageNotExists",404);
         }
 
-        return $langArr[$this->language];
+
+        return $this->langArray[$this->language];
     }
 
 

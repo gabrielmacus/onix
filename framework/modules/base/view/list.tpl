@@ -1,4 +1,4 @@
-{extends "layout.tpl"}
+{extends "demo.tpl"}
 
 {block "content"}
 
@@ -6,7 +6,7 @@
 <table>
     <thead>
          {foreach $results["keys"] val}
-             <th>{$val}</th>
+             <th>{$lang[$val]}</th>
          {/foreach}
     </thead>
 

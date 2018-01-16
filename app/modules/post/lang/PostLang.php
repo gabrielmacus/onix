@@ -13,6 +13,20 @@ use framework\modules\base\lang\BaseLang;
 
 class PostLang extends BaseLang
 {
+    public function langArray()
+    {
+
+        /**
+         * Español
+         */
+        $this->langArray["es"]["title"] = "Título";
+
+        $this->langArray["es"]["subtitle"] = "Volanta";
+
+        $this->langArray["es"]["text"] = "Texto";
+
+        return parent::langArray();
+    }
 
 
 }
