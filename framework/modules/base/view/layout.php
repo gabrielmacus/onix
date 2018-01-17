@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -9,11 +9,10 @@
 </head>
 <body>
 
-<section>
-    {block "content"}
 
-    {/block}
-</section>
+    <section>
+        <?= $this->section('body'); ?>
+    </section>
 
 </body>
 </html>

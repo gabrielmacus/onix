@@ -17,4 +17,5 @@ class Post extends Base
     protected $subtitle="";
     protected $text="";
 
+
 }

@@ -44,8 +44,8 @@ class BaseLang
          * Español
          */
         $this->langArray["es"]["noresults"] = "Sin resultados para mostrar";
-        $this->langArray["es"]["noresults"] = "Fecha de modificicación";
-        $this->langArray["es"]["noresults"] = "Fecha de creación";
+        $this->langArray["es"]["updated_at"] = "Fecha de modificicación";
+        $this->langArray["es"]["created_at"] = "Fecha de creación";
 
 
         if(empty($this->langArray[$this->language]))

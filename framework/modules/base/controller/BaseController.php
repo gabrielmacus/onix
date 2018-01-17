@@ -8,8 +8,8 @@
 
 namespace framework\modules\base\controller;
 
+use League\Plates\Engine;
 
-use Dwoo\Core;
 class BaseController
 {
 
@@ -106,10 +106,9 @@ class BaseController
         }
         elseif($view)
         {
-            $core = new Core();
+            $tplEngine = new Engine($this->viewsFolder,'php');
 
-            $tpl ="{$this->viewsFolder}/{$view}.tpl";
-
+            $template = $tplEngine->make("{$view}");
 
             foreach ($response as $key => $value)
             {
@@ -127,7 +126,8 @@ class BaseController
 
             $data["lang"] = $this->langArray;
 
-            echo $core->get($tpl, $data);
+
+            echo $template->render($data);//$core->get($tpl, $data);
 
         }
     }
