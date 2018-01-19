@@ -17,5 +17,12 @@ class Post extends Base
     protected $subtitle="";
     protected $text="";
 
+    public function rules()
+    {
+        return [
+            ['isUrl','title','invalidUrl']
+        ];
+    }
+
 
 }

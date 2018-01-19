@@ -29,7 +29,7 @@ class PostController extends BaseController
 
         $language = new PostLang(LanguageService::detectLanguage());
 
-        parent::__construct([$dao], $isApiCall,"app\\modules\\post\\model\\Post", $viewsFolder,$language->langArray());
+        parent::__construct([$dao], $isApiCall,"app\\modules\\post\\model\\Post", $viewsFolder,$language);
     }
 
 

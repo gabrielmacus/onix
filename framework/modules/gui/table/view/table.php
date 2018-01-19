@@ -7,7 +7,7 @@
         {
             ?>
             <th>
-                <?= $lang->i18n($v);?>
+                <?= $this->lang->i18n($v);?>
             </th>
             <?php
         }
@@ -28,7 +28,7 @@
             {
                 ?>
 
-                <td><?= $value; ?></td>
+                <td><?= (!empty($value))?$value:"-"; ?></td>
 
                 <?php
             }

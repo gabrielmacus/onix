@@ -8,6 +8,7 @@
 
 namespace framework\modules\base\controller;
 
+use framework\modules\base\lang\BaseLang;
 use League\Plates\Engine;
 
 class BaseController
@@ -17,22 +18,22 @@ class BaseController
     protected $daoArray;
     protected $viewsFolder;
     protected $modelClass;
-    protected $langArray;
+    protected $lang;
 
     /**
      * BaseController constructor.
      * @param $isApiCall  bool   Indicates if is an api call, or a call to the view
      * @param $daoArray  array  Data Access Objects that will be used in the controller. As default, in BaseController, the first DAO in array is used
      * @param $modelClass string Model Class that will be used in the controller
-     * @param $langArray array Dictionary with words references in the user language
+     * @param $lang BaseLang Language object that has a dictionary with words references in the user language
      * @param $viewsFolder string Folder where the templates are stored
      */
-    public function __construct(array $daoArray,$isApiCall = false,$modelClass,$viewsFolder,array $langArray)
+    public function __construct(array $daoArray,$isApiCall = false,$modelClass,$viewsFolder,BaseLang $lang)
     {
         $this->isApiCall = $isApiCall;
         $this->daoArray = $daoArray;
         $this->modelClass = $modelClass;
-        $this->langArray = $langArray;
+        $this->lang = $lang;
 
         if(!empty($viewsFolder) && is_dir($viewsFolder))
         {
@@ -112,14 +113,15 @@ class BaseController
 
             foreach ($response as $key => $value)
             {
-                $response[$key] = $value->printSerialize();
+                $response[$key] = $value->printSerialize($this->lang);
             }
 
             $data["results"]=$response;
 
 
 
-            $data["lang"] = $this->langArray;
+            $data["lang"] = $this->lang;
+
 
 
             echo $template->render($data);//$core->get($tpl, $data);

@@ -25,15 +25,16 @@ class TableComponent extends BaseComponent
      * @param $lang BaseLang
      * @param $view
      * @param $style
+     * @param $js
      * @throws \Exception
      */
-    public function __construct(array $thead,array $tbody,BaseLang $lang, $style=false ,$view="table")
+    public function __construct(array $thead,array $tbody,BaseLang $lang, $style=false ,$js = false,$view="table")
     {
         $this->thead = $thead;
         $this->tbody = $tbody;
         $this->templatePath = dirname(__FILE__)."/../view/{$view}.php";
 
-        parent::__construct($view,$style,$lang);
+        parent::__construct($lang,$view,$style,$js);
 
     }
 

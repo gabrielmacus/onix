@@ -21,7 +21,7 @@ class PostLang extends BaseLang
          */
         $this->langArray["es"]["title"] = "Título";
 
-        $this->langArray["es"]["subtitle"] = "Volanta";
+        $this->langArray["es"]["subtitle"] = "Bajada";
 
         $this->langArray["es"]["text"] = "Texto";
 

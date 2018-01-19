@@ -8,7 +8,9 @@
 
 namespace framework\modules\base\model;
 
+use framework\modules\base\lang\BaseLang;
 use framework\services\TimeService;
+use framework\services\ValidationService;
 use framework\traits\Magic;
 
 class Base implements \ArrayAccess,\JsonSerializable,IPrintable
@@ -18,6 +20,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
     protected $updated_at = false;
     protected $created_at;
     protected $_type;
+
 
 
     /**
@@ -37,6 +40,37 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 
 
     }
+
+    /**
+     * Validation rules.
+     * Format: $rules = [ ['validationFunction', $params(one or array) ,'messageForLangClass']  ]
+     * @var array
+     * @return array
+     */
+    public function rules(){
+
+        return [] ;
+    }
+
+    /**
+     * Validates model
+     * @throws \Exception
+     */
+    public function validate()
+    {
+        foreach ($this->rules() as $rule)
+        {
+            $prop = (!empty($this->$rule[1]))?$this->$rule[1]:null;
+
+            if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
+            {
+             throw new \Exception("validation.{$rule[2]}",400);
+
+            }
+        }
+
+    }
+
 
 
     public function offsetExists($offset)
@@ -84,6 +118,10 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
     {
         //Sets creation date
         $this->created_at = TimeService::now();
+
+        $this->validate();
+
+
     }
     function afterCreate()
     {
@@ -95,6 +133,8 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
         //Sets modification date
 
         $this->updated_at = TimeService::now();
+
+        $this->validate();
     }
     function afterUpdate()
     {
@@ -135,7 +175,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
         return $base;
     }
 
-    public function printSerialize()
+    public function printSerialize(BaseLang $lang)
     {
        $printableData = [];
 
@@ -143,8 +183,17 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
        {
            if($k!="_id" && $k!="_type" && $k!="password")
            {
-               $printableData[$k]=$v;
+               if(($k== "updated_at" || $k=="created_at") && !empty($lang->langArray()['dateFormat']))
+               {
+                   $date = new \DateTime($v);
+
+                   $v  = $date->format($lang->i18n("dateFormat"));
+               }
+
+
+                   $printableData[$k]=$v;
            }
+
 
        }
 

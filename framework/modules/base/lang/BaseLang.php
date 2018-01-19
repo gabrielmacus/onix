@@ -45,9 +45,10 @@ class BaseLang
          * Español
          */
         $this->langArray["es"]["noresults"] = "Sin resultados para mostrar";
-        $this->langArray["es"]["updated_at"] = "Fecha de modificicación";
+        $this->langArray["es"]["updated_at"] = "Fecha de modificación";
         $this->langArray["es"]["created_at"] = "Fecha de creación";
         $this->langArray["es"]["templateNotExists"] = "El template seleccionado no existe";
+        $this->langArray["es"]["dateFormat"] = "d-m-Y H:i";
 
         /**
          *
