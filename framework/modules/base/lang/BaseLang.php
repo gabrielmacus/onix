@@ -40,12 +40,18 @@ class BaseLang
     public function langArray()
     {
 
+        //TODO: complete missing keys (mostly errors) and find a way to load array from file (maybe passing file path to __construct)
         /**
          * Español
          */
         $this->langArray["es"]["noresults"] = "Sin resultados para mostrar";
         $this->langArray["es"]["updated_at"] = "Fecha de modificicación";
         $this->langArray["es"]["created_at"] = "Fecha de creación";
+        $this->langArray["es"]["templateNotExists"] = "El template seleccionado no existe";
+
+        /**
+         *
+         */
 
 
         if(empty($this->langArray[$this->language]))
@@ -62,7 +68,13 @@ class BaseLang
     {
         $langArr  =$this->langArray();
 
-        return $langArr[$data];
+        if(!empty($langArr[$data]))
+        {
+            return $langArr[$data];
+        }
+
+        return $data;
+
     }
 
 }

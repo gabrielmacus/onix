@@ -2,48 +2,12 @@
 
 <?php $this->start('body') ?>
 
-    <table>
-        <thead>
+<?php
+$headers=  array_keys(reset($results));
+$table = new \framework\modules\gui\table\model\TableComponent($headers,$results,$lang);
+?>
 
-            <tr>
-                <?Php
-                foreach ($results['keys'] as $k=>$v)
-                {
-                    ?>
-                    <th>
-                        <?= $lang[$v]; ?>
-                    </th>
-                    <?php
-                }
-                ?>
+<?= $table;?>
 
-            </tr>
-
-        </thead>
-        <tbody>
-
-            <?Php
-            foreach ($results['values'] as $k=>$v)
-            {
-                ?>
-                <tr>
-                    <?php
-                    foreach ($v as $value)
-                    {
-                        ?>
-
-                        <td><?= $value; ?></td>
-
-                        <?php
-                    }
-                    ?>
-                </tr>
-                <?Php
-            }
-            ?>
-
-
-        </tbody>
-    </table>
 
 <?php $this->stop() ?>

@@ -115,14 +115,9 @@ class BaseController
                 $response[$key] = $value->printSerialize();
             }
 
-            $data["results"]=[];
+            $data["results"]=$response;
 
-            if(!empty($response))
-            {
-                $data["results"]["values"]  = $response;
-                $data["results"]["keys"] = array_keys(reset($response));
 
-            }
 
             $data["lang"] = $this->langArray;
 
