@@ -25,6 +25,8 @@ class PostLang extends BaseLang
 
         $this->langArray["es"]["text"] = "Texto";
 
+        $this->langArray["es"]["slug"] = "Url amigable";
+
         return parent::langArray();
     }
 

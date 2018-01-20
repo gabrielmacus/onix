@@ -10,6 +10,7 @@ namespace framework\modules\gui\base\model;
 
 
 use framework\modules\base\lang\BaseLang;
+use framework\services\ModuleService;
 use framework\services\ValidationService;
 use framework\traits\Magic;
 
@@ -37,6 +38,12 @@ abstract class BaseComponent
      */
     public function __construct(BaseLang $lang,$view,$style = false, $js=false)
     {
+
+        if(empty($this->templatePath))
+        {
+
+            $this->templatePath = ROOT_DIR.ModuleService::GetModuleView($this)."/{$view}.php";
+        }
 
 
         if(!file_exists($this->templatePath))

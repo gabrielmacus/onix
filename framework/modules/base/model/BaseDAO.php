@@ -10,20 +10,29 @@ namespace framework\modules\base\model;
 
 
 use framework\modules\mongoConnection\model\MongoConnection;
+use framework\services\ModuleService;
 use framework\traits\Magic;
 
 class BaseDAO implements IDAO
 {
     use Magic;
    protected $connection;
+    /**
+     * Model type that is implemented in DAO
+     * @var string
+     */
+   protected $type;
 
     /**
      * BaseDAO constructor.
-     * @param $connection
+     * @param $connection MongoConnection to mongodb database
      */
     public function __construct(MongoConnection $connection = null)
     {
         $this->connection = $connection;
+
+        $this->type = ModuleService::GetModuleModel($this);
+
     }
 
 
@@ -74,7 +83,8 @@ class BaseDAO implements IDAO
 
         $collection = $connection->client()->objects;
 
-
+        $query["_type"] = $this->type;
+        
         $cursor = $collection->find($query);
 
         foreach ($cursor as $k=>$v)

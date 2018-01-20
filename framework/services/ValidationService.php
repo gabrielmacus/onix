@@ -13,13 +13,16 @@ class ValidationService
 {
     /**
      * Validates if the parameter is an url with valid format
-     * @param string $url
+     * @param string $url String to validate
+     * @param boolean $emptyIsValid Sets if, in case of string being empty, is valid or not
      * @return mixed
      */
-    static function IsUrl($url)
+    static function IsUrl($url,$emptyIsValid = false)
     {
 
-        return filter_var($url, FILTER_VALIDATE_URL);
+        $isValid = ($emptyIsValid && empty($url))?true:filter_var($url, FILTER_VALIDATE_URL);
+
+        return $isValid;
     }
 
     //TODO: make validation methods that evaluates if exists and meets the condition, and if doesn't, return true. For example: IsUrl, its counterpart will be, IsUrlIfExist

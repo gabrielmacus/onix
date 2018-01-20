@@ -43,7 +43,9 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 
     /**
      * Validation rules.
-     * Format: $rules = [ ['validationFunction', $params(one or array) ,'messageForLangClass']  ]
+     * Format: $rules = [
+     * ['validationFunction','propName',[extraParams] ,'messageForLangClass']
+     *]
      * @var array
      * @return array
      */
@@ -58,15 +60,28 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
      */
     public function validate()
     {
+        $result = [];
+
         foreach ($this->rules() as $rule)
         {
-            $prop = (!empty($this->$rule[1]))?$this->$rule[1]:null;
+            $prop = (!empty($rule[1]))?$this->$rule[1]:null;
 
-            if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
+
+            $params  =[$prop]+$rule[2];
+
+            var_dump($params);
+
+            if(!call_user_func_array("ValidationService::{$rule[0]}",$params))//if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
             {
-             throw new \Exception("validation.{$rule[2]}",400);
+
+                $result[$this->$rule[1]][] = $rule[3];
 
             }
+        }
+
+        if(count($result) > 0)
+        {
+            throw new \Exception('validation.'.json_encode($result),400);
         }
 
     }
