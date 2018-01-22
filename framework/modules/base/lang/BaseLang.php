@@ -8,8 +8,15 @@
  */
 namespace framework\modules\base\lang;
 
+use framework\services\StringService;
 use framework\traits\Magic;
 
+/**
+ * Class to process text in multiple languages
+ *
+ * Class BaseLang
+ * @package framework\modules\base\lang
+ */
 class BaseLang
 {
     use  Magic;
@@ -32,7 +39,8 @@ class BaseLang
 
 
     /**
-     * Gets the words array, corresponding to selected language
+     * Gets the words array, corresponding to selected language.
+     * In this function, you define the array with words, to add more phrases you should override and implement this on children class
      *
      * @return array
      * @throws \Exception
@@ -40,7 +48,7 @@ class BaseLang
     public function langArray()
     {
 
-        //TODO: complete missing keys (mostly errors) and find a way to load array from file (maybe passing file path to __construct)
+        //TODO: complete missing keys (mostly errors) and find a way to load array from file (maybe using ModuleService functions to detect where the file is stored in module)
         /**
          * Español
          */
@@ -49,6 +57,14 @@ class BaseLang
         $this->langArray["es"]["created_at"] = "Fecha de creación";
         $this->langArray["es"]["templateNotExists"] = "El template seleccionado no existe";
         $this->langArray["es"]["dateFormat"] = "d-m-Y H:i";
+
+        //Errores
+        $this->langArray["es"]["invalidUrl"] = "Formato de url no válido";
+        $this->langArray["es"]["lengthBetween"] = "Debe tener ente {0} y {1} caracteres";
+        $this->langArray["es"]["cantBeEmpty"] = "No puede estar vacío";
+        $this->langArray["es"]["idNotSpecified"] = "No se especifico un id correcto";
+        $this->langArray["es"]["fileNotFound"] = "Archivo no encontrado";
+
 
         /**
          *
@@ -65,13 +81,40 @@ class BaseLang
     }
 
 
+    /**
+     * @param $data string Key that matches the required phrase in dictionary
+     *
+     * If you wanna pass arguments to the required string, the format is this: keyString:parameters,separated,by,comma
+     * And the required string should have position slots to replace.
+     * @see StringService::Replace()
+     * @return string
+     *
+     *
+     */
     public function i18n($data)
     {
         $langArr  =$this->langArray();
 
-        if(!empty($langArr[$data]))
+        if(!strpos($data,":"))
         {
-            return $langArr[$data];
+            //Simple key
+            if(!empty($langArr[$data]))
+            {
+                return $langArr[$data];
+            }
+
+        }
+        else
+        {
+            //Key with arguments to replace in the string
+
+            $dataArr = explode(":",$data);
+
+            if(!empty($langArr[$dataArr[0]]))
+            {
+                return StringService::Replace($langArr[$dataArr[0]],explode(",",$dataArr[1]));
+            }
+
         }
 
         return $data;

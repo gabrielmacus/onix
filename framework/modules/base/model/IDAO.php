@@ -10,16 +10,16 @@ namespace framework\modules\base\model;
 
 
 /**
- * Sets the basic functions to store data to any source
+ * Sets the basic functions to store data into any source
  *
  * Interface IDAO
  * @package framework\modules\base\model
  */
 interface IDAO
 {
-    function __construct();
+
     function Create(Base &$base);
     function Read(array $query);
     function Update(Base $base);
-    function Delete(\MongoId $id);
+    function Delete( $id);
 }

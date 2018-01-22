@@ -20,6 +20,11 @@ class RouteService
 
         $ControllerClass = "app\\modules\\".$controllerName."\\controller\\".ucfirst($controllerName)."Controller";
 
+        if(!class_exists($ControllerClass))
+        {
+            throw  new \Exception("moduleNotFound",404);
+        }
+
         $controller = new $ControllerClass($isApiCall);
 
         $controller->$actionName();

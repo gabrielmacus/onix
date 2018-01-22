@@ -23,7 +23,9 @@ class Post extends Base
     {
         return [
 
-            ['IsUrl','title',[true],'invalidUrl']
+            ['NotEmpty','title',[],'cantBeEmpty'],
+            ['MatchesLength','title',[5,120],'lengthBetween:5,120']
+
 
         ];
     }
@@ -36,19 +38,22 @@ class Post extends Base
         $this->slug = (!empty($this->title))?UrlService::UrlSlug($this->title):"";
     }
 
-    function beforeCreate()
+    static function BeforeCreate(Base &$obj)
     {
-        $this->makeSlug();
+        $obj->makeSlug();
 
-        parent::beforeCreate();
+
+        parent::BeforeCreate($obj);
     }
 
-    function beforeUpdate()
+    static function BeforeUpdate(Base &$obj)
     {
-        $this->makeSlug();
+        $obj->makeSlug();
 
-        parent::beforeUpdate();
+        parent::BeforeUpdate($obj);
     }
+
+
 
 
 }

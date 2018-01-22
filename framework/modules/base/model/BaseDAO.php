@@ -50,7 +50,9 @@ class BaseDAO implements IDAO
 
         $collection = $connection->client()->objects;
 
-        $base->beforeCreate();
+        //$base->beforeCreate();
+
+        call_user_func("{$this->type}::BeforeCreate",$base);
 
         $data = $base->jsonSerialize() + ["_type"=>$base->_type];
 
@@ -59,8 +61,9 @@ class BaseDAO implements IDAO
             throw new \Exception("create",500);
         }
 
-        $base->afterCreate();
+        //$base->afterCreate();
 
+        call_user_func("{$this->type}::AfterCreate",$base);
 
         $base["_id"]  = $data["_id"];
 
@@ -84,7 +87,7 @@ class BaseDAO implements IDAO
         $collection = $connection->client()->objects;
 
         $query["_type"] = $this->type;
-        
+
         $cursor = $collection->find($query);
 
         foreach ($cursor as $k=>$v)
@@ -111,7 +114,8 @@ class BaseDAO implements IDAO
     {
         $connection = $this->connection;
 
-        $id = (!empty($base->_id))?$base->_id:false;
+        $id = (!empty($base["_id"]))?$base["_id"]:false;
+
 
         if(!$id)
         {
@@ -127,7 +131,16 @@ class BaseDAO implements IDAO
             throw new \Exception("elementDoesntExist");
         }
 
-        $base->beforeUpdate();
+        //$base->beforeUpdate();
+
+        //call_user_func("{$this->type}::BeforeUpdate",$base);
+
+
+        $BeforeUpdate = $this->type."::BeforeUpdate";
+
+        $BeforeUpdate($base);
+
+
 
         $data =  $base->jsonSerialize();
 
@@ -140,9 +153,17 @@ class BaseDAO implements IDAO
             throw new \Exception("update",500);
         }
 
-        $base->afterUpdate();
+//        $base->afterUpdate();
+
+       // call_user_func("{$this->type}::AfterUpdate",$base);
+
+        $AfterUpdate = "{$this->type}::AfterUpdate";
+
+        $AfterUpdate($base);
+
 
     }
+
 
     /**
      * Deletes a single element from db
@@ -150,8 +171,13 @@ class BaseDAO implements IDAO
      * @param \MongoId $id
      * @throws \Exception
      */
-    function Delete(\MongoId $id)
+    function Delete($id)
     {
+
+        if(!is_a($id,"MongoId"))
+        {
+            throw new \MongoException("idNotSpecified",400);
+        }
 
         $connection = $this->connection;
 
@@ -159,12 +185,21 @@ class BaseDAO implements IDAO
 
         $collection = $connection->client()->objects;
 
-        if($collection->count(["_id"=>$id]) == 0)
+        if(!$itemToDelete = $collection->find(["_id"=>$id])->getNext())
         {
             throw new \Exception("elementDoesntExist");
         }
 
+
+        //call_user_func("{$this->type}::BeforeDelete",$itemToDelete);
+        $BeforeDelete = "{$this->type}::BeforeDelete";
+        $BeforeDelete($itemToDelete);
+
         $collection->remove(["_id"=>$id]);
+        $AfterDelete = "{$this->type}::AfterDelete";
+        $AfterDelete($itemToDelete);
+
+        //call_user_func("{$this->type}::AfterDelete",$itemToDelete);
     }
 
     //TODO: program Replace funcion

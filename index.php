@@ -12,6 +12,10 @@ use Phroute\Phroute\RouteCollector;
 try
 {
 
+    $fs = new \framework\modules\fileStorage\model\FileStorage(ROOT_DIR."dmo.json");
+
+
+    $fs->Delete("5a65040c425ae1.33407332");
 
 
     $router = new RouteCollector();
@@ -125,5 +129,19 @@ try
 }
 catch (Exception $e)
 {
-    var_dump($e);
+
+    http_response_code($e->getCode());
+
+   switch (true)
+   {
+       case (is_a($e,"\\framework\\modules\\base\\exception\\ValidationException")):
+
+           echo $e->getMessage();
+
+           break;
+
+       default:
+           var_dump($e);
+           break;
+   }
 }

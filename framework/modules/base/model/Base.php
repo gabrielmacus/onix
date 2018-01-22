@@ -8,9 +8,11 @@
 
 namespace framework\modules\base\model;
 
+use framework\modules\base\exception\ValidationException;
 use framework\modules\base\lang\BaseLang;
+use framework\services\LanguageService;
+use framework\services\ModuleService;
 use framework\services\TimeService;
-use framework\services\ValidationService;
 use framework\traits\Magic;
 
 class Base implements \ArrayAccess,\JsonSerializable,IPrintable
@@ -20,6 +22,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
     protected $updated_at = false;
     protected $created_at;
     protected $_type;
+    protected $_id;
 
 
 
@@ -56,32 +59,36 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 
     /**
      * Validates model
-     * @throws \Exception
+     * @throws ValidationException
      */
     public function validate()
     {
         $result = [];
 
+        $LangClass = ModuleService::GetModuleLang($this);
+
+        $lang  = new $LangClass(LanguageService::detectLanguage());
+
+
         foreach ($this->rules() as $rule)
         {
+
             $prop = (!empty($rule[1]))?$this->$rule[1]:null;
+        $params = array_merge([$prop],$rule[2]);
 
 
-            $params  =[$prop]+$rule[2];
-
-            var_dump($params);
-
-            if(!call_user_func_array("ValidationService::{$rule[0]}",$params))//if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
+            if(!call_user_func_array("framework\\services\\ValidationService::{$rule[0]}",$params))//if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
             {
 
-                $result[$this->$rule[1]][] = $rule[3];
+                $result[$rule[1]][] = $lang->i18n($rule[3]);
 
             }
         }
 
         if(count($result) > 0)
         {
-            throw new \Exception('validation.'.json_encode($result),400);
+
+            throw new ValidationException(json_encode($result));
         }
 
     }
@@ -90,6 +97,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 
     public function offsetExists($offset)
     {
+
         return isset($this->$offset);
     }
 
@@ -129,33 +137,39 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
         return $json;
     }
 
-    function beforeCreate()
+    static function BeforeCreate(Base &$obj)
     {
         //Sets creation date
-        $this->created_at = TimeService::now();
+        $obj->created_at = TimeService::now();
 
-        $this->validate();
+        $obj->validate();
 
 
     }
-    function afterCreate()
+    static function AfterCreate(Base &$obj)
     {
         //TODO: Implement
     }
-
-    function beforeUpdate()
+    static function BeforeUpdate(Base &$obj)
     {
         //Sets modification date
 
-        $this->updated_at = TimeService::now();
+        $obj->updated_at = TimeService::now();
 
-        $this->validate();
+        $obj->validate();
     }
-    function afterUpdate()
+    static function AfterUpdate(Base &$obj)
     {
         //TODO: Implement
     }
-
+    static function BeforeDelete(Base &$obj)
+    {
+        //TODO: Implement
+    }
+    static function AfterDelete(Base &$obj)
+    {
+        //TODO: Implement
+    }
 
 
     /**
