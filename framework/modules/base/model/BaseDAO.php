@@ -9,6 +9,7 @@
 namespace framework\modules\base\model;
 
 
+use app\modules\post\model\Post;
 use framework\modules\mongoConnection\model\MongoConnection;
 use framework\services\ModuleService;
 use framework\traits\Magic;
@@ -50,9 +51,9 @@ class BaseDAO implements IDAO
 
         $collection = $connection->client()->objects;
 
-        //$base->beforeCreate();
+        $TypeClass = "{$this->type}";
 
-        call_user_func("{$this->type}::BeforeCreate",$base);
+        $TypeClass::BeforeCreate($base);
 
         $data = $base->jsonSerialize() + ["_type"=>$base->_type];
 
@@ -61,9 +62,8 @@ class BaseDAO implements IDAO
             throw new \Exception("create",500);
         }
 
-        //$base->afterCreate();
 
-        call_user_func("{$this->type}::AfterCreate",$base);
+        $TypeClass::AfterCreate($base);
 
         $base["_id"]  = $data["_id"];
 
@@ -131,14 +131,10 @@ class BaseDAO implements IDAO
             throw new \Exception("elementDoesntExist");
         }
 
-        //$base->beforeUpdate();
 
-        //call_user_func("{$this->type}::BeforeUpdate",$base);
+        $TypeClass = $this->type;
 
-
-        $BeforeUpdate = $this->type."::BeforeUpdate";
-
-        $BeforeUpdate($base);
+        $TypeClass::BeforeUpdate($base);
 
 
 
@@ -153,13 +149,8 @@ class BaseDAO implements IDAO
             throw new \Exception("update",500);
         }
 
-//        $base->afterUpdate();
 
-       // call_user_func("{$this->type}::AfterUpdate",$base);
-
-        $AfterUpdate = "{$this->type}::AfterUpdate";
-
-        $AfterUpdate($base);
+        $TypeClass::AfterUpdate($base);
 
 
     }
@@ -191,15 +182,13 @@ class BaseDAO implements IDAO
         }
 
 
-        //call_user_func("{$this->type}::BeforeDelete",$itemToDelete);
-        $BeforeDelete = "{$this->type}::BeforeDelete";
-        $BeforeDelete($itemToDelete);
+        $TypeClass = "{$this->type}";
+        $TypeClass::BeforeDelete($itemToDelete);
 
         $collection->remove(["_id"=>$id]);
-        $AfterDelete = "{$this->type}::AfterDelete";
-        $AfterDelete($itemToDelete);
 
-        //call_user_func("{$this->type}::AfterDelete",$itemToDelete);
+        $TypeClass::AfterDelete($itemToDelete);
+
     }
 
     //TODO: program Replace funcion

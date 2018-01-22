@@ -14,10 +14,24 @@ use framework\services\UrlService;
 
 class Post extends Base
 {
+    /*
     protected $title="";
     protected $subtitle="";
     protected $text="";
-    protected $slug="";
+    protected $slug="";*/
+
+
+    public function model()
+    {
+        $model = parent::model();
+
+        $model[]="title";
+        $model[]="subtitle";
+        $model[]="text";
+        $model[]="slug";
+
+        return $model;
+    }
 
     public function rules()
     {
@@ -35,6 +49,7 @@ class Post extends Base
      */
     function makeSlug()
     {
+        var_dump($this);
         $this->slug = (!empty($this->title))?UrlService::UrlSlug($this->title):"";
     }
 

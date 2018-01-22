@@ -13,17 +13,24 @@ use framework\modules\base\lang\BaseLang;
 use framework\services\LanguageService;
 use framework\services\ModuleService;
 use framework\services\TimeService;
+use framework\services\ValidationService;
 use framework\traits\Magic;
 
 class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 {
     use Magic;
 
+    /*
     protected $updated_at = false;
     protected $created_at;
     protected $_type;
-    protected $_id;
+    protected $_id;*/
 
+
+    public function model()
+    {
+       return  ["updated_at","created_at","_type","_id"];
+    }
 
 
     /**
@@ -49,12 +56,17 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
      * Format: $rules = [
      * ['validationFunction','propName',[extraParams] ,'messageForLangClass']
      *]
+     * The message for lang class is the key that will be associated to a phrase in current module's lang class
+     * The validation function is an static function taken from ValidationService
+     * @see ValidationService
      * @var array
      * @return array
      */
     public function rules(){
 
-        return [] ;
+        $rules = [];
+
+        return $rules;
     }
 
     /**
@@ -185,10 +197,11 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
         $Class = get_class($this);
         $base = new $Class();
 
+        /*
         foreach ($base as $k=>$v)
         {
             unset($base[$k]);
-        }
+        }*/
 
 
         foreach ($array as $k=>$v)
