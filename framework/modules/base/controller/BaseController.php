@@ -143,10 +143,10 @@ class BaseController
         $model = $model->ObjectFromArray($_POST);
 
 
-        $dao->Update($model);
+        $response = $dao->Update($model);
 
-        //TODO: set response
-        $this->sendResponse([]);
+
+        $this->sendResponse($response);
     }
 
     public function delete(){

@@ -77,6 +77,7 @@ class BaseDAO implements IDAO
     function Read(array $query)
     {
 
+
         //Results fetched
         $results = [];
 
@@ -94,7 +95,6 @@ class BaseDAO implements IDAO
         {
             $object = new $v["_type"]();
 
-
             $results[strval($v["_id"])]= $object->ObjectFromArray($v);
         }
 
@@ -108,10 +108,13 @@ class BaseDAO implements IDAO
      *
      * @param Base $base Element that will be updated. Should have the _id
      * @throws \Exception
+     * @return Base Updated element
      *
      */
     function Update(Base $base)
     {
+
+
         $connection = $this->connection;
 
         $id = (!empty($base["_id"]))?$base["_id"]:false;
@@ -137,21 +140,24 @@ class BaseDAO implements IDAO
         $TypeClass::BeforeUpdate($base);
 
 
-
         $data =  $base->jsonSerialize();
 
         unset($data["_id"]);
 
         $data  = ['$set'=> $data];
 
-        if(!$collection->update(["_id"=>$id],$data ))
+        if(!$result = $collection->update(["_id"=>$id],$data ))
         {
             throw new \Exception("update",500);
         }
 
+        //Fetching updated element
+        $base =  $this->Read(["_id"=>$id])[strval($id)];
 
         $TypeClass::AfterUpdate($base);
 
+
+        return $base;
 
     }
 

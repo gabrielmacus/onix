@@ -27,10 +27,61 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
     protected $_id;*/
 
 
-    public function model()
+    /**
+     * Defines properties of the model.
+     * Format is:
+     * $model  = ['property_name'=>'default_value']
+     * @return array
+     */
+    function model()
     {
-       return  ["updated_at","created_at","_type","_id"];
+        $model =
+            [
+                "updated_at" => "",
+                "created_at" =>TimeService::now(),
+                "_type" => ""
+            ];
+       return  $model;
     }
+
+    /**
+     * Cleans properties that aren't defined on Model() from an object
+     * @see model()
+     * @param Base $obj Object to be cleaned
+     */
+    static function CleanModel(Base &$obj)
+    {
+
+
+        foreach ($obj as $k=>$v)
+        {
+
+            if(!isset($obj->model()[$k]))
+            {
+                unset($obj[$k]);
+            }
+        }
+
+    }
+
+    /**
+     * Sets default property values, according to Model(), to an object
+     * @see model()
+     * @param Base $obj Object that will be set
+     */
+    static function SetDefaultProperties(Base &$obj)
+    {
+        //Sets default data
+        foreach ($obj->model() as $property => $default)
+        {
+            if(!isset($obj[$property]))
+            {
+                $obj[$property] = $default;
+            }
+        }
+    }
+
+
 
 
     /**
@@ -75,6 +126,8 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
      */
     public function validate()
     {
+
+
         $result = [];
 
         $LangClass = ModuleService::GetModuleLang($this);
@@ -85,16 +138,20 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
         foreach ($this->rules() as $rule)
         {
 
-            $prop = (!empty($rule[1]))?$this->$rule[1]:null;
-        $params = array_merge([$prop],$rule[2]);
+            $prop = (!empty($this[$rule[1]]))?$this->$rule[1]:null;
 
 
-            if(!call_user_func_array("framework\\services\\ValidationService::{$rule[0]}",$params))//if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
-            {
 
-                $result[$rule[1]][] = $lang->i18n($rule[3]);
+                $params = array_merge([$prop],$rule[2]);
 
-            }
+
+                if(!call_user_func_array("framework\\services\\ValidationService::{$rule[0]}",$params))//if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
+                {
+
+                    $result[$rule[1]][] = $lang->i18n($rule[3]);
+
+                }
+
         }
 
         if(count($result) > 0)
@@ -149,10 +206,14 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
         return $json;
     }
 
+
+
     static function BeforeCreate(Base &$obj)
     {
-        //Sets creation date
-        $obj->created_at = TimeService::now();
+
+        static::CleanModel($obj);
+
+        static::SetDefaultProperties($obj);
 
         $obj->validate();
 
@@ -165,10 +226,14 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
     static function BeforeUpdate(Base &$obj)
     {
         //Sets modification date
-
         $obj->updated_at = TimeService::now();
 
         $obj->validate();
+
+        static::CleanModel($obj);
+
+
+
     }
     static function AfterUpdate(Base &$obj)
     {
@@ -193,6 +258,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
      */
     public function ObjectFromArray(Array $array)
     {
+
         $array["_type"]=$this->_type;
         $Class = get_class($this);
         $base = new $Class();

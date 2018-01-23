@@ -14,30 +14,28 @@ use framework\services\UrlService;
 
 class Post extends Base
 {
-    /*
-    protected $title="";
-    protected $subtitle="";
-    protected $text="";
-    protected $slug="";*/
 
 
-    public function model()
+
+    function model()
     {
         $model = parent::model();
 
-        $model[]="title";
-        $model[]="subtitle";
-        $model[]="text";
-        $model[]="slug";
+        $model["title"]="";
+        $model["subtitle"]="";
+        $model["text"]="";
+        $model["slug"]="";
+
 
         return $model;
     }
+
 
     public function rules()
     {
         return [
 
-            ['NotEmpty','title',[],'cantBeEmpty'],
+            ['MatchesLength','subtitle',[15,250,true],'lengthBetween,15,250'],
             ['MatchesLength','title',[5,120],'lengthBetween:5,120']
 
 
@@ -49,15 +47,13 @@ class Post extends Base
      */
     function makeSlug()
     {
-        var_dump($this);
+
         $this->slug = (!empty($this->title))?UrlService::UrlSlug($this->title):"";
     }
 
     static function BeforeCreate(Base &$obj)
     {
         $obj->makeSlug();
-
-
         parent::BeforeCreate($obj);
     }
 
