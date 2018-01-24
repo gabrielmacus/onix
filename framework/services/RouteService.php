@@ -18,7 +18,8 @@ class RouteService
 
         // Controller class
 
-        $ControllerClass = "app\\modules\\".$controllerName."\\controller\\".ucfirst($controllerName)."Controller";
+        $ControllerClass = (class_exists("app\\modules\\".$controllerName."\\controller\\".ucfirst($controllerName)."Controller"))?"app\\modules\\".$controllerName."\\controller\\".ucfirst($controllerName)."Controller":"framework\\modules\\".$controllerName."\\controller\\".ucfirst($controllerName)."Controller";
+
 
         if(!class_exists($ControllerClass))
         {

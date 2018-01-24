@@ -122,6 +122,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 
     /**
      * Validates model
+     * If i'm updating, only set properties are validated, and, if i'm creating, the whole model is validated
      * @throws ValidationException
      */
     public function validate()
@@ -141,16 +142,22 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
             $prop = (!empty($this[$rule[1]]))?$this->$rule[1]:null;
 
 
-
-                $params = array_merge([$prop],$rule[2]);
-
-
-                if(!call_user_func_array("framework\\services\\ValidationService::{$rule[0]}",$params))//if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
+                if(empty($prop) xor !empty($this->_id))
                 {
+                    //If a property is empty or the model is updating, but not both
 
-                    $result[$rule[1]][] = $lang->i18n($rule[3]);
+                    $params = array_merge([$prop],$rule[2]);
 
+
+                    if(!call_user_func_array("framework\\services\\ValidationService::{$rule[0]}",$params))//if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
+                    {
+
+                        $result[$rule[1]][] = $lang->i18n($rule[3]);
+
+                    }
                 }
+
+
 
         }
 
@@ -162,49 +169,6 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 
     }
 
-
-
-    public function offsetExists($offset)
-    {
-
-        return isset($this->$offset);
-    }
-
-    public function offsetGet($offset)
-    {
-        return $this->$offset;
-    }
-
-    public function offsetSet($offset, $value)
-    {
-
-        $this->$offset = $value;
-    }
-
-    public function offsetUnset($offset)
-    {
-        unset($this->$offset);
-    }
-
-
-    function jsonSerialize()
-    {
-        $json = [];
-        foreach ($this as  $k=>$v)
-        {
-            if(isset($this[$k]))
-            {
-                if($k=="_id")
-                {
-                    $v = strval($v);
-                }
-
-                $json[$k]=$v;
-            }
-        }
-
-        return $json;
-    }
 
 
 
@@ -247,6 +211,11 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
     {
         //TODO: Implement
     }
+
+
+
+
+
 
 
     /**
@@ -307,4 +276,46 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 
        return $printableData;
     }
+
+    public function offsetExists($offset)
+    {
+
+        return isset($this->$offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->$offset;
+    }
+
+    public function offsetSet($offset, $value)
+    {
+
+        $this->$offset = $value;
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->$offset);
+    }
+
+    function jsonSerialize()
+    {
+        $json = [];
+        foreach ($this as  $k=>$v)
+        {
+            if(isset($this[$k]))
+            {
+                if($k=="_id")
+                {
+                    $v = strval($v);
+                }
+
+                $json[$k]=$v;
+            }
+        }
+
+        return $json;
+    }
+
 }

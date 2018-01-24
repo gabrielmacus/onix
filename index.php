@@ -12,11 +12,6 @@ use Phroute\Phroute\RouteCollector;
 try
 {
 
-    $fs = new \framework\modules\fileStorage\model\FileStorage(ROOT_DIR."dmo.json");
-
-
-    $fs->Delete("5a65040c425ae1.33407332");
-
 
     $router = new RouteCollector();
     //TODO: use $_ENV to set route start (replace 'onix')
@@ -104,6 +99,7 @@ try
 
 
     $router->post("onix/api/{controller}/{id}",function ($controllerName,$id){
+
 
         $_POST["_id"] =$id;
 

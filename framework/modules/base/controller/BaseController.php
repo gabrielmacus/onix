@@ -179,6 +179,10 @@ class BaseController
 
             $data["results"]=$response;
 
+            $data["model"] = new $this->modelClass();
+
+            $data["model"] = array_keys($data["model"]->model());
+
 
 
             $data["lang"] = $this->lang;

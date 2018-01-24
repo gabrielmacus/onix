@@ -27,16 +27,18 @@ if(count($this->thead) >0 && count($this->tbody)> 0)
         {
             ?>
             <tr>
-                <?php
-                foreach ($v as $value)
-                {
-                    ?>
 
-                    <td><?= (!empty($value))?$value:"-"; ?></td>
-
-                    <?php
-                }
+            <?Php
+            foreach ($this->thead as $key)
+            {
                 ?>
+
+                <td><?= (!empty($v[$key]))?$v[$key]:"-"; ?></td>
+
+                <?php
+            }
+                ?>
+
             </tr>
             <?Php
         }

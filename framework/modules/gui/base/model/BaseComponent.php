@@ -43,6 +43,7 @@ abstract class BaseComponent
         {
 
             $this->templatePath = ROOT_DIR.ModuleService::GetModuleView($this)."/{$view}.php";
+
         }
 
 
@@ -57,7 +58,16 @@ abstract class BaseComponent
 
         if(empty($style))
         {
-            $this->style = [];
+            $defaultCss = ROOT_DIR.ModuleService::GetModuleView($this)."/{$view}.css";
+            if(file_exists($defaultCss))
+            {
+                $this->style = [$defaultCss];
+            }
+            else
+            {
+                $this->style = [];
+            }
+
         }
         else
         {

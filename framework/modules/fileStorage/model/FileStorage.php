@@ -18,10 +18,10 @@ use framework\services\FileService;
  * Class FileStorage
  * @package framework\modules\fileStorage\model
  */
-class FileStorage extends Base implements IDAO
+class FileStorage  implements IDAO
 {
 
-    //TODO: Call beforeDelete() and  afterDelete() (only if required)
+    //TODO: Call beforeDelete() and  afterDelete()
 
     protected $filePath;
 
@@ -46,7 +46,8 @@ class FileStorage extends Base implements IDAO
     {
 
 
-        $base->_id = uniqid("",true);
+        //TODO: Look for better ways to generate unique ids
+        $base->_id = md5(uniqid(rand(), true));
 
         $this->Update($base);
 

@@ -35,7 +35,7 @@ class Post extends Base
     {
         return [
 
-            ['MatchesLength','subtitle',[15,250,true],'lengthBetween,15,250'],
+            ['MatchesLength','subtitle',[15,250,true],'lengthBetween:15,250'],
             ['MatchesLength','title',[5,120],'lengthBetween:5,120']
 
 
