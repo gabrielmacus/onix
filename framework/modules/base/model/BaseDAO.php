@@ -131,7 +131,7 @@ class BaseDAO implements IDAO
 
         if(!$itemToUpdate = $collection->find(["_id"=>$id])->getNext())
         {
-            throw new \Exception("elementDoesntExist");
+            throw new \Exception("elementDoesntExist",404);
         }
 
 
@@ -184,7 +184,7 @@ class BaseDAO implements IDAO
 
         if(!$itemToDelete = $collection->find(["_id"=>$id])->getNext())
         {
-            throw new \Exception("elementDoesntExist");
+            throw new \Exception("elementDoesntExist",404);
         }
 
 

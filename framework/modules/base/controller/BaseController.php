@@ -153,7 +153,12 @@ class BaseController
 
         $dao = reset($this->daoArray);
 
-        $id = (!empty($_POST["_id"]))? new \MongoId($_POST["_id"]):false;
+
+       // $id = (!empty($_POST["_id"]))? new \MongoId($_POST["_id"]):false;
+        $id = (!empty($_POST["_id"]))? $_POST["_id"]:false;
+
+        //If the id is Mongo uuid or not
+        $id = (\MongoId::isValid($id))?new \MongoId($id):$id;
 
         $dao->Delete($id);
 

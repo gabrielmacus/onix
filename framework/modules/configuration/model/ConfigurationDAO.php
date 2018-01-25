@@ -6,17 +6,17 @@
  * Time: 02:45 PM
  */
 
-namespace framework\modules\config\model;
+namespace framework\modules\configuration\model;
 
 
 use framework\modules\base\model\Base;
-use framework\modules\fileStorage\model\FileStorage;
+use framework\modules\fileStorage\model\FileStorageDAO;
 
-class ConfigDAO extends FileStorage
+class ConfigurationDAO extends FileStorageDAO
 {
     public function __construct()
     {
-        parent::__construct(FRAMEWORK_DIR."/modules/config/config.json");
+        parent::__construct(FRAMEWORK_DIR."modules/configuration/config.json");
     }
 
 
@@ -33,15 +33,16 @@ class ConfigDAO extends FileStorage
     {
         $this->beforeSave($base);
 
-        parent::Create($base);
+        return  parent::Create($base);
     }
 
     function Update(Base $base)
     {
 
+
         $this->beforeSave($base);
 
-        parent::Update($base);
+       return parent::Update($base);
     }
 
 

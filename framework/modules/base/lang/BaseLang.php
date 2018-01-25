@@ -55,7 +55,6 @@ class BaseLang
         $this->langArray["es"]["noresults"] = "Sin resultados para mostrar";
         $this->langArray["es"]["updated_at"] = "Fecha de modificación";
         $this->langArray["es"]["created_at"] = "Fecha de creación";
-        $this->langArray["es"]["templateNotExists"] = "El template seleccionado no existe";
         $this->langArray["es"]["dateFormat"] = "d-m-Y H:i";
 
         //Errores
@@ -64,6 +63,8 @@ class BaseLang
         $this->langArray["es"]["cantBeEmpty"] = "No puede estar vacío";
         $this->langArray["es"]["idNotSpecified"] = "No se especifico un id correcto";
         $this->langArray["es"]["fileNotFound"] = "Archivo no encontrado";
+        $this->langArray["es"]["elementDoesntExist"] = "El elemento requerido no existe";
+        $this->langArray["es"]["templateNotExists"] = "El template seleccionado no existe";
 
 
         /**

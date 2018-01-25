@@ -6,12 +6,15 @@
  * Time: 02:56 PM
  */
 
-namespace framework\modules\config\controller;
+namespace framework\modules\configuration\controller;
 
 
 use framework\modules\base\controller\BaseController;
 
-class ConfigController extends BaseController
+class ConfigurationController extends BaseController
 {
+
+
+
 
 }

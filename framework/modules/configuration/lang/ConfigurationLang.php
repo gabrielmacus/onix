@@ -6,12 +6,12 @@
  * Time: 02:57 PM
  */
 
-namespace framework\modules\config\lang;
+namespace framework\modules\configuration\lang;
 
 
 use framework\modules\base\lang\BaseLang;
 
-class ConfigLang extends BaseLang
+class ConfigurationLang extends BaseLang
 {
 
 }

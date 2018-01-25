@@ -1,91 +1,39 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Puers
- * Date: 21/01/2018
- * Time: 12:26
+ * User: Gabriel
+ * Date: 25/01/2018
+ * Time: 11:12 AM
  */
 
 namespace framework\modules\fileStorage\model;
 
 
 use framework\modules\base\model\Base;
-use framework\modules\base\model\IDAO;
-use framework\services\FileService;
 
-/**
- * Manipulates data with basic CRUD functions in json format using a file as storage engine
- * Class FileStorage
- * @package framework\modules\fileStorage\model
- */
-class FileStorage  implements IDAO
+class FileStorage extends Base
 {
 
-    //TODO: Call beforeDelete() and  afterDelete()
-
-    protected $filePath;
-
-    /**
-     * FileStorage constructor.
-     * @param $filePath
-     */
-    public function __construct($filePath)
+    public function ObjectFromArray(Array $array)
     {
-        $this->filePath = $filePath;
 
-        if(!file_exists($filePath))
+        $array["_type"]=$this->_type;
+        $Class = get_class($this);
+        $base = new $Class();
+
+        /*
+        foreach ($base as $k=>$v)
         {
-            //Creates file if doesn't exist
-            FileService::SaveData($filePath,"{}");
+            unset($base[$k]);
+        }*/
+
+
+        foreach ($array as $k=>$v)
+        {
+            $base[$k]=$v;
         }
 
+        return $base;
     }
 
-
-    function Create(Base &$base)
-    {
-
-
-        //TODO: Look for better ways to generate unique ids
-        $base->_id = md5(uniqid(rand(), true));
-
-        $this->Update($base);
-
-
-
-    }
-
-    function Read(array $query)
-    {
-        //TODO: set query algorithm for plain json
-        return FileService::ReadFile($this->filePath,true);
-    }
-
-    function Update(Base $base)
-    {
-
-        //$base->beforeUpdate();
-
-        $data =  FileService::ReadFile($this->filePath,true);
-
-        $data[$base->_id] = $base;
-
-        FileService::SaveData($this->filePath,json_encode($data));
-
-
-
-    }
-
-    function Delete($id)
-    {
-
-
-        $data =  FileService::ReadFile($this->filePath,true);
-
-        unset($data[$id]);
-
-
-        FileService::SaveData($this->filePath,json_encode($data));
-
-    }
 }
