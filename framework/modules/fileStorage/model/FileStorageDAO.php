@@ -12,6 +12,7 @@ namespace framework\modules\fileStorage\model;
 use framework\modules\base\model\Base;
 use framework\modules\base\model\IDAO;
 use framework\services\FileService;
+use framework\services\ModuleService;
 
 /**
  * Manipulates data with basic CRUD functions in json format using a file as storage engine
@@ -70,7 +71,22 @@ class FileStorageDAO  implements IDAO
     function Read(array $query)
     {
         //TODO: set query algorithm for plain json
-        return FileService::ReadFile($this->filePath,true);
+        $results = FileService::ReadFile($this->filePath,true);
+
+        $TypeClass = ModuleService::GetModuleModel($this);
+
+        foreach ($results as $k=>$v)
+        {
+            $obj = new $TypeClass();
+            $obj = $obj->ObjectFromArray($v);
+
+
+
+            $results[$k] = $obj;
+
+        }
+
+        return $results;
     }
 
     function Update(Base $base)

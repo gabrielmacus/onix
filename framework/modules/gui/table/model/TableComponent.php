@@ -11,8 +11,9 @@ namespace framework\modules\gui\table\model;
 
 use framework\modules\base\lang\BaseLang;
 use framework\modules\gui\base\model\BaseComponent;
+use framework\modules\gui\base\model\ILoopable;
 
-class TableComponent extends BaseComponent
+class TableComponent extends BaseComponent implements ILoopable
 {
 
     protected $thead;
@@ -37,9 +38,15 @@ class TableComponent extends BaseComponent
 
     }
 
+    function onLoop(array &$item)
+    {
+        // TODO: Implement onLoop() method.
+    }
+
 
     function getHtml()
     {
+
         ob_start();
         echo parent::getHtml();
         include $this->templatePath;

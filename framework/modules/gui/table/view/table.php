@@ -25,6 +25,10 @@ if(count($this->thead) >0 && count($this->tbody)> 0)
         <?Php
         foreach ($this->tbody as $k=>$v)
         {
+
+
+            $this::onLoop($v);
+
             ?>
             <tr>
 

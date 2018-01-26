@@ -167,6 +167,7 @@ class BaseController
     }
     public function sendResponse($response,$view=false)
     {
+        //TODO: find a more efficient way to send response to client, i mean, a way in which you could reuse the code from the parent in the children
         if($this->isApiCall)
         {
             echo json_encode($response);
@@ -182,19 +183,13 @@ class BaseController
                 $response[$key] = $value->printSerialize($this->lang);
             }
 
+
             $data["results"]=$response;
-
-            $data["model"] = new $this->modelClass();
-
-            $data["model"] = array_keys($data["model"]->model());
-
-
 
             $data["lang"] = $this->lang;
 
 
-
-            echo $template->render($data);//$core->get($tpl, $data);
+            echo $template->render($data);
 
         }
     }

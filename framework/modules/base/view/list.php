@@ -3,7 +3,9 @@
 <?php $this->start('body') ?>
 
 <?php
-$table = new \framework\modules\gui\table\model\TableComponent($model,$results,$lang );
+$headers = array_keys(reset($results));
+
+$table = new \framework\modules\gui\table\model\TableComponent($headers,$results,$lang );
 ?>
 
 <?= $table;?>

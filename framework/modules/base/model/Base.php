@@ -258,7 +258,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 
        foreach ($this as $k=>$v)
        {
-           if($k!="_id" && $k!="_type" && $k!="password")
+           if(  $k!="_type" && $k!="password")
            {
                if(($k== "updated_at" || $k=="created_at") && !empty($lang->langArray()['dateFormat']))
                {
