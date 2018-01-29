@@ -106,4 +106,6 @@ class ModuleService
         return $dao."\\lang\\".ucfirst(self::GetModule($object))."Lang";
     }
 
+
+
 }

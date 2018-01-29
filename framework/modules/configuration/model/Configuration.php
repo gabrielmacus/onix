@@ -23,6 +23,8 @@ class Configuration extends FileStorage
         //TESTING,DEVELOPMENT or PRODUCTION
         $model["env"] ="DEVELOPMENT";
 
+        $model["active"] = false;
+
         //App parameters
         $model["app_name"]="";
         $model["app_url"]="";
@@ -45,6 +47,8 @@ class Configuration extends FileStorage
 
         return $model;
     }
+
+
 
     public function rules()
     {

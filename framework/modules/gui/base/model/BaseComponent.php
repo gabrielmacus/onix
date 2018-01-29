@@ -27,7 +27,8 @@ abstract class BaseComponent
     protected $js;
     protected $templatePath;
     protected $lang;
-
+    protected $id;
+    protected static $instanceCounter=1;
     /**
      * BaseComponent constructor. Should be called AFTER children's __construct call
      * @param $view  string Template that will be used from the view folder in component's root. This param gives you the posibility to select between multiple templates in one component
@@ -38,6 +39,7 @@ abstract class BaseComponent
      */
     public function __construct(BaseLang $lang,$view,$style = false, $js=false)
     {
+
 
         if(empty($this->templatePath))
         {
@@ -83,6 +85,9 @@ abstract class BaseComponent
         {
             $this->js = (!is_array($js))?[$js]:$js;
         }
+        $this->id = ModuleService::GetModule($this)."-".static::$instanceCounter;
+
+        static::$instanceCounter = static::$instanceCounter+1;
 
     }
 
@@ -126,7 +131,7 @@ abstract class BaseComponent
 
          }
 
-
+         include $this->templatePath;
 
 
          $html = ob_get_contents();
@@ -141,7 +146,7 @@ abstract class BaseComponent
 
         $r  = new \ReflectionClass(get_class($this));
 
-        echo "<!--- ".$r->getShortName()." --->";
+        echo "<!--- START ".$r->getShortName()." --->";
 
         echo $this->getHtml();
 

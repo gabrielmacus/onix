@@ -23,5 +23,16 @@ interface IPrintable
     public function printSerialize(BaseLang $lang);
 
 
+    /**
+     * Iterates over an array of IPrintable and calls printSerialize in every object
+     * @param array $arr Array of IPrintable
+     * @param BaseLang $lang Language object that will be used in printSerialize
+     * @see printSerialize
+     *
+     */
+    static function PrintSerializeArray(array &$arr,BaseLang $lang);
+
+
+
 
 }

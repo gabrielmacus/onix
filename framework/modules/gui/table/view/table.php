@@ -1,67 +1,42 @@
-<?php
-if(count($this->thead) >0 && count($this->tbody)> 0)
-{
-    ?>
-    <table>
+<?php if(count($this->thead) >0 && count($this->tbody)> 0):?>
+    <table id="<?= $this->id ?>">
         <thead>
 
         <tr>
-            <?Php
-            foreach ($this->thead as $k=>$v)
-            {
-                ?>
+            <?Php foreach ($this->thead as $k=>$v):?>
                 <th>
                     <?= $this->lang->i18n($v);?>
                 </th>
-                <?php
-            }
-            ?>
+            <?php endforeach;?>
 
         </tr>
 
         </thead>
         <tbody>
 
-        <?Php
-        foreach ($this->tbody as $k=>$v)
-        {
+        <?Php foreach ($this->tbody as $k=>$v):?>
 
+            <?php $this::onLoop($v); ?>
 
-            $this::onLoop($v);
-
-            ?>
             <tr>
 
-            <?Php
-            foreach ($this->thead as $key)
-            {
-                ?>
+            <?Php foreach ($this->thead as $key):?>
 
                 <td><?= (!empty($v[$key]))?$v[$key]:"-"; ?></td>
 
-                <?php
-            }
-                ?>
+            <?php endforeach;?>
 
             </tr>
-            <?Php
-        }
-        ?>
+        <?Php endforeach; ?>
 
 
         </tbody>
     </table>
 
-    <?php
-}
-else
-{
-    ?>
+<?php else:  ?>
     <div class="no-results">
         <p>
             <?= $this->lang->i18n("noresults");?>
         </p>
     </div>
-    <?php
-}
-?>
+<?php endif; ?>

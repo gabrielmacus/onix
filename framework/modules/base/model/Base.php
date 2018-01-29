@@ -277,6 +277,19 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
        return $printableData;
     }
 
+    static function PrintSerializeArray(array &$arr,BaseLang $lang)
+    {
+
+       foreach ($arr as $k=>$v)
+       {
+           if($v instanceof IPrintable)
+           {
+               $arr[$k] = $v->printSerialize($lang);
+           }
+       }
+    }
+
+
     public function offsetExists($offset)
     {
 

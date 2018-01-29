@@ -27,6 +27,8 @@ class ConfigurationDAO extends FileStorageDAO
         $base::CleanModel($base);
 
         $base::SetDefaultProperties($base);
+
+
     }
 
     function Create(Base &$base)

@@ -11,10 +11,8 @@ use Phroute\Phroute\RouteCollector;
 
 try
 {
-
-
     $router = new RouteCollector();
-    //TODO: use $_ENV to set route start (replace 'onix')
+    //TODO:  set route start not to be hardcoded (replace 'onix')
 
 
 

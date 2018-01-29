@@ -22,6 +22,12 @@ class BaseController
     protected $viewsFolder;
     protected $modelClass;
     protected $lang;
+    /**
+     * Templates engine. Current base on php plates
+     * @see http://platesphp.com/v3/engine/
+     * @var
+     */
+    protected $tplEngine;
 
     /**
      * @deprecated
@@ -104,6 +110,16 @@ class BaseController
             //If no views folder is specified or doesn't exist, base views folder is set
             $this->viewsFolder = FRAMEWORK_DIR."modules/base/view";
         }
+        $this->tplEngine = new Engine($this->viewsFolder,'php');
+
+
+        //TODO: load parent folder templates
+
+        $this->tplEngine->addFolder("base",FRAMEWORK_DIR."/modules/base/view");
+
+
+
+        //TODO: may be i can scan the views folder to add template folders
     }
 
 
@@ -115,7 +131,10 @@ class BaseController
 
         $results = $dao->read($filter);
 
-        $this->sendResponse($results,"list");
+        $ModelClass = $this->modelClass;
+        $ModelClass::PrintSerializeArray($results,$this->lang);
+
+        $this->sendResponse(["results"=>$results],"list");
 
     }
 
@@ -129,7 +148,11 @@ class BaseController
 
         $dao->Create($model);
 
-        $this->sendResponse($model);
+        $ModelClass = $this->modelClass;
+        $ModelClass::PrintSerializeArray($model,$this->lang);
+
+
+        $this->sendResponse(["results"=>$model]);
 
 
     }
@@ -145,8 +168,11 @@ class BaseController
 
         $response = $dao->Update($model);
 
+        $ModelClass = $this->modelClass;
+        $ModelClass::PrintSerializeArray($response,$this->lang);
 
-        $this->sendResponse($response);
+
+        $this->sendResponse(["results"=>$response]);
     }
 
     public function delete(){
@@ -165,31 +191,28 @@ class BaseController
         $this->sendResponse([]);
 
     }
+
+
     public function sendResponse($response,$view=false)
     {
-        //TODO: find a more efficient way to send response to client, i mean, a way in which you could reuse the code from the parent in the children
-        if($this->isApiCall)
+         if($this->isApiCall)
         {
             echo json_encode($response);
         }
         elseif($view)
         {
-            $tplEngine = new Engine($this->viewsFolder,'php');
+            $tplEngine = $this->tplEngine;
 
             $template = $tplEngine->make("{$view}");
 
-            foreach ($response as $key => $value)
-            {
-                $response[$key] = $value->printSerialize($this->lang);
-            }
+            $response["bodyClass"][] = ModuleService::GetModule($this);
 
 
-            $data["results"]=$response;
 
-            $data["lang"] = $this->lang;
+            $response["lang"] = $this->lang;
 
 
-            echo $template->render($data);
+            echo $template->render($response);
 
         }
     }

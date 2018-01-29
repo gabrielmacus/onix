@@ -61,9 +61,10 @@ class BaseLang
         $this->langArray["es"]["cantBeEmpty"] = "No puede estar vacío";
         $this->langArray["es"]["idNotSpecified"] = "No se especifico un id correcto";
         $this->langArray["es"]["fileNotFound"] = "Archivo no encontrado";
+        $this->langArray["es"]["pageNotFound"] = "Página no encontrada";
         $this->langArray["es"]["elementDoesntExist"] = "El elemento requerido no existe";
         $this->langArray["es"]["templateNotExists"] = "El template seleccionado no existe";
-
+        $this->langArray["es"]["actionNotAvailable"] = "Acción no disponible";
 
         /**
          *

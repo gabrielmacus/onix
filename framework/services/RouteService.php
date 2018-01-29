@@ -9,13 +9,30 @@
 namespace framework\services;
 
 
+use framework\modules\configuration\model\Configuration;
+use framework\modules\configuration\model\ConfigurationDAO;
+
+//TODO: Refactor service name
+
 class RouteService
 {
 
+    /**
+     * Loads a controller and executes a given action
+     * @param $controllerName string Name of the controller to be loaded
+     * @param $actionName string Name of the action to be executed
+     * @param bool $isApiCall Specifies if is an api call or not, and should render a page
+     * @throws \Exception
+     */
     static function Load($controllerName,$actionName,$isApiCall=false)
     {
 
-        $enviroments = ["app","framework","site"];
+
+
+        $subdomain = UrlService::GetSubdomain();
+
+        $enviroments  = ($subdomain == "app")?["app","framework"]:["site"];
+
 
         foreach ($enviroments as $enviroment)
         {
@@ -28,12 +45,31 @@ class RouteService
 
         }
 
+
+
         if(empty($ControllerClass))
         {
             throw  new \Exception("moduleNotFound",404);
 
         }
 
+
+        if( !self::CheckConfigurationExistence() && $ControllerClass != "framework\\modules\\quickstart\\controller\\QuickstartController")
+        {
+
+            //If initial configuration isn't set
+            if(!$isApiCall)
+            {
+               //Redirects to quickstart module
+                header("Location: quickstart");
+                exit();
+            }
+            else
+            {
+                throw new \Exception("initialConfigNotSet",400);
+            }
+
+        }
 
 
 
@@ -45,4 +81,43 @@ class RouteService
 
     }
 
+
+    /**
+     * Check if an active configuration exists
+     * @return boolean|Configuration
+     */
+    static function CheckConfigurationExistence()
+    {
+        $configurationDao = new ConfigurationDAO();
+        $configurations =$configurationDao->Read([]);
+
+        $env  = strtoupper(self::GetEnviroment());
+        $currentConfiguration = false;
+
+        foreach ($configurations as $configuration)
+        {
+                if($configuration["env"] == $env && $configuration["active"] == true)
+                {
+                    $currentConfiguration = $configuration;
+                    break;
+                }
+        }
+
+        return $currentConfiguration;
+
+
+
+    }
+
+    /**
+     * Gets current enviroment. eg: development
+     * @return string
+     */
+    static function GetEnviroment()
+    {
+        //TODO: analyze another way to set enviroment than reading it from a plain file
+        $env = FileService::ReadFile(ROOT_DIR."/env");
+        return trim($env);
+
+    }
 }
