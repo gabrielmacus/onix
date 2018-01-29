@@ -15,16 +15,27 @@ class RouteService
     static function Load($controllerName,$actionName,$isApiCall=false)
     {
 
+        $enviroments = ["app","framework","site"];
 
-        // Controller class
+        foreach ($enviroments as $enviroment)
+        {
 
-        $ControllerClass = (class_exists("app\\modules\\".$controllerName."\\controller\\".ucfirst($controllerName)."Controller"))?"app\\modules\\".$controllerName."\\controller\\".ucfirst($controllerName)."Controller":"framework\\modules\\".$controllerName."\\controller\\".ucfirst($controllerName)."Controller";
+            if(class_exists($enviroment."\\modules\\".$controllerName."\\controller\\".ucfirst($controllerName)."Controller"))
+            {
+                $ControllerClass = $enviroment."\\modules\\".$controllerName."\\controller\\".ucfirst($controllerName)."Controller";
+                break;
+            }
 
+        }
 
-        if(!class_exists($ControllerClass))
+        if(empty($ControllerClass))
         {
             throw  new \Exception("moduleNotFound",404);
+
         }
+
+
+
 
         $controller = new $ControllerClass($isApiCall);
 

@@ -35,19 +35,16 @@ class BaseLang
     {
         $this->language = $language;
 
+        $this->loadLang();
+
     }
 
-
     /**
-     * Gets the words array, corresponding to selected language.
      * In this function, you define the array with words, to add more phrases you should override and implement this on children class
-     *
      * @return array
-     * @throws \Exception
      */
-    public function langArray()
+    public function loadLang()
     {
-
         //TODO: complete missing keys (mostly errors) and find a way to load array from file (maybe using ModuleService functions to detect where the file is stored in module)
         /**
          * Español
@@ -72,6 +69,18 @@ class BaseLang
          *
          */
 
+        return $this->langArray;
+    }
+
+    /**
+     * Gets the words array, corresponding to selected language.
+     *
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function langArray()
+    {
 
         if(empty($this->langArray[$this->language]))
         {

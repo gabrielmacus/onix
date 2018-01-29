@@ -13,6 +13,8 @@ define("FRAMEWORK_DIR",ROOT_DIR."framework/");
 
 define("APP_DIR",ROOT_DIR."app/");
 
+define("SITE_DIR",ROOT_DIR."site/");
+
 define("CURRENT_URL",(isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
 
 

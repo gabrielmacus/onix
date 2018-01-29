@@ -13,8 +13,12 @@ use framework\modules\base\lang\BaseLang;
 
 class PostLang extends BaseLang
 {
-    public function langArray()
+
+
+    public function loadLang()
     {
+
+        parent::loadLang();
 
         /**
          * Español
@@ -27,8 +31,8 @@ class PostLang extends BaseLang
 
         $this->langArray["es"]["slug"] = "Url amigable";
 
-        return parent::langArray();
-    }
 
+        return $this->langArray;
+    }
 
 }

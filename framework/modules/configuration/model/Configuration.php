@@ -26,6 +26,8 @@ class Configuration extends FileStorage
         //App parameters
         $model["app_name"]="";
         $model["app_url"]="";
+        //TODO: set an id for every app that is deployed
+        $model["app_id"] ="";
 
         //Site parameters
         $model["site_name"]="";
