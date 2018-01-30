@@ -3,11 +3,9 @@
 
 
 <?php $this->start('step-body') ?>
-
-
-<?= new \framework\modules\gui\input\model\InputComponent("demo","text",$lang)?>
-
-<?= new \framework\modules\gui\input\model\InputComponent("demo","text",$lang)?>
+<?php $formElements = [new \framework\modules\gui\input\model\InputComponent("A",$lang)]; ?>
+<?php $form = new \framework\modules\gui\form\model\FormComponent($formElements,"",$lang) ?>
+<?= $form ?>
 
 <?php  $this->stop()?>
 

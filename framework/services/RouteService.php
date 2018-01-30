@@ -61,6 +61,7 @@ class RouteService
             if(!$isApiCall)
             {
                //Redirects to quickstart module
+                //TODO: fix redirect
                 header("Location: quickstart");
                 exit();
             }

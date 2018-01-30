@@ -10,19 +10,16 @@ namespace framework\modules\gui\input\model;
 
 
 use framework\modules\base\lang\BaseLang;
-use framework\modules\gui\base\model\BaseComponent;
+use framework\modules\gui\form\model\FormElement;
 
-class InputComponent extends BaseComponent
+class InputComponent extends FormElement
 {
 
     protected $type;
 
-    protected $tabindex;
-    protected $label;
 
 
-
-    public function __construct($label,$type ="text",BaseLang $lang,$style = false, $js = false, $view = "input")
+    public function __construct($label,BaseLang $lang,$type ="text",$style = false, $js = false, $view = "input")
     {
         $this->label = $label;
         $this->type = $type;
