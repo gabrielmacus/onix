@@ -4,37 +4,28 @@
 
 <?php $this->start('step-body') ?>
 
-<?php
+<form method="post" action="quickstart">
+    <?= $this->fetch('components::input',["name"=>"app_name","label"=>$lang->i18n("app_name")]);?>
 
-$c = new \framework\modules\configuration\model\Configuration();
+    <?= $this->fetch('components::input',["name"=>"app_url","label"=>$lang->i18n("app_url")]);?>
 
-$cModel = $c->model();
+    <?= $this->fetch('components::input',["name"=>"site_name","label"=>$lang->i18n("site_name")]);?>
 
-$elementsArray=[];
+    <?= $this->fetch('components::input',["name"=>"site_url","label"=>$lang->i18n("site_url")]);?>
+
+    <?= $this->fetch('components::input',["name"=>"db_name","label"=>$lang->i18n("db_name")]);?>
+
+    <?= $this->fetch('components::input',["name"=>"db_pass","label"=>$lang->i18n("db_pass")]);?>
+
+    <?= $this->fetch('components::input',["name"=>"db_host","label"=>$lang->i18n("db_host")]);?>
+
+    <?= $this->fetch('components::input',["type"=>"number","name"=>"db_port","label"=>$lang->i18n("db_port")]);?>
+
+    <?= $this->fetch('components::button',["type"=>"submit","label"=>$lang->i18n("sendForm")]);?>
 
 
-$elementsArray[]= new \framework\modules\gui\input\model\InputComponent("app_name",$lang);
+</form>
 
-$elementsArray[]= new \framework\modules\gui\input\model\InputComponent("app_url",$lang);
-
-$elementsArray[]= new \framework\modules\gui\input\model\InputComponent("site_name",$lang);
-
-$elementsArray[]= new \framework\modules\gui\input\model\InputComponent("site_url",$lang);
-
-$elementsArray[]= new \framework\modules\gui\input\model\InputComponent("db_name",$lang);
-
-$elementsArray[]= new \framework\modules\gui\input\model\InputComponent("db_user",$lang);
-
-$elementsArray[]= new \framework\modules\gui\input\model\InputComponent("db_pass",$lang,"password");
-
-$elementsArray[]= new \framework\modules\gui\input\model\InputComponent("db_host",$lang);
-
-$elementsArray[]= new \framework\modules\gui\input\model\InputComponent("db_port",$lang,"number",["min"=>1,"max"=>65535]);
-
-$form = new \framework\modules\gui\form\model\FormComponent($elementsArray,"post",$lang);
-?>
-
-<?= $form ?>
 
 
 <?php  $this->stop()?>

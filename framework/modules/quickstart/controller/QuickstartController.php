@@ -9,14 +9,14 @@
 namespace framework\modules\quickstart\controller;
 
 
-use framework\modules\base\controller\BaseController;
+use framework\modules\configuration\controller\ConfigurationController;
+use framework\modules\configuration\model\Configuration;
+use framework\modules\configuration\model\ConfigurationDAO;
 use framework\modules\quickstart\lang\QuickstartLang;
 use framework\services\LanguageService;
-use framework\services\ModuleService;
-use League\Plates\Engine;
 
 
-class QuickstartController extends BaseController
+class QuickstartController extends ConfigurationController
 {
     function __construct($isApiCall)
     {
@@ -24,18 +24,21 @@ class QuickstartController extends BaseController
 
         $this->lang  = new QuickstartLang(LanguageService::detectLanguage());
         $this->viewsFolder = FRAMEWORK_DIR."modules/quickstart/view";
-        $this->tplEngine = new Engine($this->viewsFolder,'php');
-        $this->tplEngine->addFolder("base",FRAMEWORK_DIR."/modules/base/view");
 
 
+        $this->loadTemplates();
+
+        $this->daoArray[] = new ConfigurationDAO() ;
+        $this->modelClass="framework\\modules\\configuration\\model\\Configuration";
 
 
     }
 
+    /*
     public function create()
     {
         throw new \Exception("actionNotAvailable",404);
-    }
+    }*/
     public function update()
     {
         throw new \Exception("actionNotAvailable",404);

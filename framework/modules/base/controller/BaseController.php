@@ -110,18 +110,26 @@ class BaseController
             //If no views folder is specified or doesn't exist, base views folder is set
             $this->viewsFolder = FRAMEWORK_DIR."modules/base/view";
         }
-        $this->tplEngine = new Engine($this->viewsFolder,'php');
 
+        $this->loadTemplates();
+    }
+
+
+    /**
+     * Loads the templates to be used. Should be called before using them, preferentially in __construct
+     */
+    public function loadTemplates()
+    {
+        $this->tplEngine = new Engine($this->viewsFolder,'php');
 
         //TODO: load parent folder templates
 
         $this->tplEngine->addFolder("base",FRAMEWORK_DIR."/modules/base/view");
 
-
+        $this->tplEngine->addFolder("components",FRAMEWORK_DIR."/modules/gui-components/view");
 
         //TODO: may be i can scan the views folder to add template folders
     }
-
 
     public function index()
     {
@@ -148,8 +156,7 @@ class BaseController
 
         $dao->Create($model);
 
-        $ModelClass = $this->modelClass;
-        $ModelClass::PrintSerializeArray($model,$this->lang);
+        $model =$model->printSerialize($this->lang);
 
 
         $this->sendResponse(["results"=>$model]);
@@ -168,8 +175,7 @@ class BaseController
 
         $response = $dao->Update($model);
 
-        $ModelClass = $this->modelClass;
-        $ModelClass::PrintSerializeArray($response,$this->lang);
+        $response =  $response->printSerialize($this->lang);
 
 
         $this->sendResponse(["results"=>$response]);

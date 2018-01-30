@@ -54,7 +54,7 @@ class BaseLang
         $this->langArray["es"]["created_at"] = "Fecha de creación";
         $this->langArray["es"]["dateFormat"] = "d-m-Y H:i";
         $this->langArray["es"]["_id"] = "ID";
-
+        $this->langArray["es"]["sendForm"] = "Aceptar";
         //Errores
         $this->langArray["es"]["invalidUrl"] = "Formato de url no válido";
         $this->langArray["es"]["lengthBetween"] = "Debe tener ente {0} y {1} caracteres";

@@ -280,6 +280,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
     static function PrintSerializeArray(array &$arr,BaseLang $lang)
     {
 
+
        foreach ($arr as $k=>$v)
        {
            if($v instanceof IPrintable)
