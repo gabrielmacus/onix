@@ -27,6 +27,16 @@ class ConfigurationLang extends BaseLang
         $this->langArray["es"]["site_name"] = "Nombre del sitio";
         $this->langArray["es"]["site_url"] = "URL del sitio";
         $this->langArray["es"]["noresults"] = "No hay ninguna configuración cargada";
+        $this->langArray["es"]["db_name"] = "Nombre de la base de datos";
+        $this->langArray["es"]["db_user"] = "Usuario de la base de datos";
+        $this->langArray["es"]["db_pass"] = "Contraseña de la base de datos";
+        $this->langArray["es"]["db_host"] = "Host de la base de datos";
+        $this->langArray["es"]["db_port"] = "Puerto de la base de datos";
+
+
+
+
+
 
         return $this->langArray;
     }

@@ -29,12 +29,12 @@ class TableComponent extends BaseComponent implements ILoopable
      * @param $js
      * @throws \Exception
      */
-    public function __construct(array $thead = [],array $tbody = [],BaseLang $lang, $style=false ,$js = false,$view="table")
+    public function __construct(array $thead = [],array $tbody = [],BaseLang $lang,$extraAttributes=[], $style=false ,$js = false,$view="table")
     {
         $this->thead = $thead;
         $this->tbody = $tbody;
 
-        parent::__construct($lang,$view,$style,$js);
+        parent::__construct($lang,$extraAttributes,$view,$style,$js);
 
     }
 

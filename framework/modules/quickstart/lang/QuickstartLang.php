@@ -8,10 +8,9 @@
 
 namespace framework\modules\quickstart\lang;
 
+use framework\modules\configuration\lang\ConfigurationLang;
 
-use framework\modules\base\lang\BaseLang;
-
-class QuickstartLang extends BaseLang
+class QuickstartLang extends ConfigurationLang
 {
     public function loadLang()
     {
@@ -24,6 +23,7 @@ class QuickstartLang extends BaseLang
         $this->langArray["es"]["stepNumber"] ="Paso {0}";
         $this->langArray["es"]["quickstartWelcome"] ="Bienvenido, a continuación deberá seguir una serie de pasos para configurar y poder usar el panel de administración";
         $this->langArray["es"]["superadminData"] ="Datos del usuario Superadministrador";
+
 
 
 

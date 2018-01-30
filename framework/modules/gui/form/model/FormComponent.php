@@ -18,14 +18,14 @@ class FormComponent extends BaseComponent
     protected $action;
     protected $method;
     protected $enctype;
-    public function __construct(array $formElementsArr,$action,BaseLang $lang,$enctype="application/x-www-form-urlencoded",$method="post", $view ="form", $style = false, $js = false)
+    public function __construct(array $formElementsArr,$action,BaseLang $lang,$extraAttributes = [],$enctype="application/x-www-form-urlencoded",$method="post", $view ="form", $style = false, $js = false)
     {
         $this->action = $action;
         $this->method =$method;
         $this->enctype =$enctype;
         $this->formElementsArr = $formElementsArr;
 
-        parent::__construct($lang, $view, $style, $js);
+        parent::__construct($lang,$extraAttributes, $view, $style, $js);
     }
 
 

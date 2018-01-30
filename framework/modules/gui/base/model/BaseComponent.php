@@ -28,18 +28,22 @@ abstract class BaseComponent
     protected $templatePath;
     protected $lang;
     protected $id;
+    protected $extraAttributes;
     protected static $instanceCounter=1;
     /**
      * BaseComponent constructor. Should be called AFTER children's __construct call
      * @param $view  string Template that will be used from the view folder in component's root. This param gives you the posibility to select between multiple templates in one component
      * @param $style mixed String/array with Path/Url where css file/s to be applied to the component is/are stored
      * @param $lang BaseLang Language object that will be used
+     * @param $extraAttributes array Extra attributes that will be added to component
      * @param $js mixed String/array with Path/Url where js file/s to be applied to the component is/are stored
      * @throws \Exception
      */
-    public function __construct(BaseLang $lang,$view,$style = false, $js=false)
+    public function __construct(BaseLang $lang,$extraAttributes =[],$view,$style = false, $js=false)
     {
 
+
+        $this->extraAttributes = $extraAttributes;
 
         if(empty($this->templatePath))
         {
@@ -154,6 +158,25 @@ abstract class BaseComponent
 
         $html = ob_get_contents();
         ob_end_clean();
+
+        return $html;
+    }
+
+
+    /**
+     * Loads the array of extra attributes into a string that will be applied to the Component
+     * @return string
+     */
+    function loadExtraAttributes()
+    {
+        $html = "";
+
+        foreach ($this->extraAttributes as $attribute=>$value)
+        {
+
+            $html.=" {$attribute} = '{$value}' ";
+        }
+
 
         return $html;
     }
