@@ -4,7 +4,7 @@
 
 <?php $this->start('step-body') ?>
 
-<form id="step-1-form" method="post" enctype="application/x-www-form-urlencoded" action="<?php echo \framework\services\UrlService::CurrentUrl() ?>">
+<form onsubmit="Utils.onSubmit(event)" id="step-1-form" method="post" enctype="application/x-www-form-urlencoded" action="<?php echo preg_replace("/quickstart|quickstart\//","api/quickstart",\framework\services\UrlService::CurrentUrl()) ?>">
 
 
     <?= $this->fetch('components::input',["name"=>"app_name","label"=>$lang->i18n("app_name")]);?>
@@ -27,25 +27,6 @@
 
 
 </form>
-
-<script>
-
-    (function() {
-
-        document.querySelector("#step-1-form").onsubmit=function (event) {
-
-            event.preventDefault();
-            return false;
-        }
-        /*
-        var s = new Submit(document.querySelector("#step-1-form"));
-
-        */
-
-
-    })();
-
-</script>
 
 
 <?php  $this->stop()?>

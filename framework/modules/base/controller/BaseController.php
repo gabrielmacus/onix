@@ -159,6 +159,7 @@ class BaseController
         $model =$model->printSerialize($this->lang);
 
 
+
         $this->sendResponse(["results"=>$model]);
 
 
@@ -203,6 +204,7 @@ class BaseController
     {
          if($this->isApiCall)
         {
+
             echo json_encode($response);
         }
         elseif($view)

@@ -130,7 +130,8 @@ catch (Exception $e)
    {
        case (is_a($e,"\\framework\\modules\\base\\exception\\ValidationException")):
 
-           echo $e->getMessage();
+           $r = ["validation"=>true,"errors"=>json_decode($e->getMessage(),true)];
+           echo json_encode($r);
 
            break;
 

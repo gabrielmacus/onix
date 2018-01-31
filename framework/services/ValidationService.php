@@ -30,6 +30,42 @@ class ValidationService
         return $isValid;
     }
 
+    /**
+     * Determines if a number is between a range
+     *
+     * @param $number int Number to evaluate
+     * @param $max int Max value
+     * @param $min int Min value
+     * @param bool $inclusive Sets if equality of the $number to $max or $min should be considered in range
+     * @return bool
+     */
+    static function InRange($number,$max,$min,$inclusive = true)
+    {
+
+        if(!is_numeric($number)){
+
+            return false;
+        }
+
+        if($inclusive)
+        {
+
+            if($max > $number || $min < $number)
+            {
+                return false;
+            }
+
+        }
+        else
+        {
+            if($max >= $number || $min <= $number)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      * Validates if a given string matches length

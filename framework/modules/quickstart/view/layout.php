@@ -8,7 +8,6 @@
     <title><?= $this->e($pageTitle) ?></title>
 
     <script type="text/javascript" src="static/js/submit.js"></script>
-
 </head>
 
 

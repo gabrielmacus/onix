@@ -22,6 +22,7 @@ class QuickstartController extends ConfigurationController
     {
 
 
+        $this->isApiCall = $isApiCall;
         $this->lang  = new QuickstartLang(LanguageService::detectLanguage());
         $this->viewsFolder = FRAMEWORK_DIR."modules/quickstart/view";
 

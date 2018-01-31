@@ -52,7 +52,12 @@ class Configuration extends FileStorage
 
     public function rules()
     {
-        return parent::rules(); // TODO: Set Config validation rules
+        $rules = parent::rules();
+
+
+        $rules[] = ['InRange','db_port',[1,10,true] ,'portRangeAllowed:1,10'];
+
+        return $rules; // TODO: Set Config validation rules
     }
 
     static function BeforeUpdate(Base &$obj)
