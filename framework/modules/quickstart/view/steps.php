@@ -1,4 +1,4 @@
-<?php $this->layout("base::layout",$this->data);  ?>
+<?php $this->layout("layout",$this->data);  ?>
 
 
 <?php $this->start('body') ?>
@@ -22,6 +22,10 @@
 
         <div class="body">
             <?= $this->section('step-body'); ?>
+            <p class="step-important-message">
+                <?= $lang->i18n("stepImportantMessage") ?>
+            </p>
+
         </div>
 
         <footer>

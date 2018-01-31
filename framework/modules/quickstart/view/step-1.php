@@ -1,10 +1,12 @@
 
-<?php $this->layout("steps",["title"=>$lang->i18n("initialConfigData"),"stepNumber"=>1] + $this->data);  ?>
+<?php $this->layout("steps",["title"=>$lang->i18n("initialConfigData"),"stepNumber"=>1,"pageTitle"=>$lang->i18n("initialConfigData")." - ".$lang->i18n("stepNumber:1")] + $this->data);  ?>
 
 
 <?php $this->start('step-body') ?>
 
-<form method="post" action="quickstart">
+<form id="step-1-form" method="post" enctype="application/x-www-form-urlencoded" action="<?php echo \framework\services\UrlService::CurrentUrl() ?>">
+
+
     <?= $this->fetch('components::input',["name"=>"app_name","label"=>$lang->i18n("app_name")]);?>
 
     <?= $this->fetch('components::input',["name"=>"app_url","label"=>$lang->i18n("app_url")]);?>
@@ -26,6 +28,24 @@
 
 </form>
 
+<script>
+
+    (function() {
+
+        document.querySelector("#step-1-form").onsubmit=function (event) {
+
+            event.preventDefault();
+            return false;
+        }
+        /*
+        var s = new Submit(document.querySelector("#step-1-form"));
+
+        */
+
+
+    })();
+
+</script>
 
 
 <?php  $this->stop()?>
