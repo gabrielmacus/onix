@@ -22,6 +22,7 @@ class ConfigurationDAO extends FileStorageDAO
 
     function beforeSave(&$base)
     {
+
         $base->validate();
 
         $base::CleanModel($base);

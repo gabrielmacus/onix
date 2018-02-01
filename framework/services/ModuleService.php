@@ -38,6 +38,7 @@ class ModuleService
      */
     static function GetModuleModel($object)
     {
+
         $r = new \ReflectionClass(get_class($object));
 
         $explode = explode("\\",$r->getNamespaceName());

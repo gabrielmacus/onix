@@ -11,21 +11,22 @@ use Phroute\Phroute\RouteCollector;
 
 try
 {
-    $router = new RouteCollector();
-    //TODO:  set route start not to be hardcoded (replace 'onix')
+
+
+   $router = new RouteCollector();
 
 
 
     /**
      * Create
      */
-    $router->post("onix/{controller}/",function ($controllerName){
+    $router->post("{controller}/",function ($controllerName){
 
         \framework\services\RouteService::Load($controllerName,'create');
 
     });
 
-    $router->post("onix/api/{controller}/",function ($controllerName){
+    $router->post("api/{controller}/",function ($controllerName){
 
         \framework\services\RouteService::Load($controllerName,'create',true);
 
@@ -40,7 +41,7 @@ try
      */
 
 
-    $router->get("onix/{controller}/",function ($controllerName){
+    $router->get("{controller}/",function ($controllerName){
 
 
         \framework\services\RouteService::Load($controllerName,"index");
@@ -48,7 +49,7 @@ try
     });
 
 
-    $router->get("onix/api/{controller}/",function ($controllerName){
+    $router->get("api/{controller}/",function ($controllerName){
 
         \framework\services\RouteService::Load($controllerName,"index",true);
 
@@ -63,7 +64,7 @@ try
      * Delete
      */
 
-    $router->delete("onix/{controller}/{id}",function ($controllerName,$id){
+    $router->delete("{controller}/{id}",function ($controllerName,$id){
 
         $_POST["_id"] = $id;
         \framework\services\RouteService::Load($controllerName,"delete");
@@ -71,7 +72,7 @@ try
     });
 
 
-    $router->delete("onix/api/{controller}/{id}",function ($controllerName,$id){
+    $router->delete("api/{controller}/{id}",function ($controllerName,$id){
 
         $_POST["_id"] =$id;
 
@@ -88,7 +89,7 @@ try
      * Update
      */
 
-    $router->post("onix/{controller}/{id}",function ($controllerName,$id){
+    $router->post("{controller}/{id}",function ($controllerName,$id){
 
         $_POST["_id"] = $id;
         \framework\services\RouteService::Load($controllerName,"update");
@@ -96,7 +97,7 @@ try
     });
 
 
-    $router->post("onix/api/{controller}/{id}",function ($controllerName,$id){
+    $router->post("api/{controller}/{id}",function ($controllerName,$id){
 
 
         $_POST["_id"] =$id;

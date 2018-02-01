@@ -9,9 +9,11 @@
 namespace framework\modules\quickstart\controller;
 
 use framework\modules\base\controller\BaseController;
+use framework\modules\configuration\controller\ConfigurationController;
 use framework\modules\configuration\model\ConfigurationDAO;
 use framework\modules\quickstart\lang\QuickstartLang;
 use framework\services\LanguageService;
+use framework\services\RouteService;
 
 
 class QuickstartController extends BaseController
@@ -23,11 +25,9 @@ class QuickstartController extends BaseController
         $this->isApiCall = $isApiCall;
         $this->lang  = new QuickstartLang(LanguageService::detectLanguage());
         $this->viewsFolder = FRAMEWORK_DIR."modules/quickstart/view";
-
-
         $this->loadTemplates();
 
-        $this->daoArray[] = new ConfigurationDAO() ;
+        $this->daoArray[]=new ConfigurationDAO();
 
 
     }
@@ -38,13 +38,20 @@ class QuickstartController extends BaseController
 
         $step = (!empty($_GET["s"]))?$_GET["s"]:1;
 
+
+        $configuration= RouteService::CheckConfiguration();
+
         switch ($step):
 
             case 1:
 
-              //RouteService::CheckConfigurationExistence()
-
-                //$this->daoArray[0]->Create();
+              if($configuration)
+              {
+                header("Location: ".$configuration["app_url"]."quickstart?s=2");
+              }
+                $_POST["active"]="true";
+                $cController = new ConfigurationController($this->isApiCall,[reset($this->daoArray)]);
+                $cController->create();
 
 
                 break;

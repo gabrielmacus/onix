@@ -54,7 +54,7 @@ class RouteService
         }
 
 
-        if( !self::CheckConfigurationExistence() && $ControllerClass != "framework\\modules\\quickstart\\controller\\QuickstartController")
+        if( !self::CheckConfiguration() && $ControllerClass != "framework\\modules\\quickstart\\controller\\QuickstartController")
         {
 
             //If initial configuration isn't set
@@ -85,9 +85,10 @@ class RouteService
 
     /**
      * Check if an active configuration exists
+     *
      * @return boolean|Configuration
      */
-    static function CheckConfigurationExistence()
+    static function CheckConfiguration()
     {
         $configurationDao = new ConfigurationDAO();
         $configurations =$configurationDao->Read([]);

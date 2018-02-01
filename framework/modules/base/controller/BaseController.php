@@ -17,11 +17,9 @@ use League\Plates\Engine;
 class BaseController
 {
 
-    //TODO: delete $modelClass. This is because i can detect the models i need from the $daoArray, using ModuleService
     protected $isApiCall;
     protected $daoArray;
     protected $viewsFolder;
-    protected $modelClass;
     protected $lang;
     /**
      * Templates engine. Current base on php plates
@@ -30,43 +28,16 @@ class BaseController
      */
     protected $tplEngine;
 
-    /**
-     * @deprecated
-     * BaseController constructor.
-     * @param $isApiCall  bool   Indicates if is an api call, or a call to the view
-     * @param $daoArray  array  Data Access Objects that will be used in the controller. As default, in BaseController, the first DAO in array is used
-     * @param $modelClass string Model Class that will be used in the controller
-     * @param $lang BaseLang Language object that has a dictionary with words references in the user language
-     * @param $viewsFolder string Folder where the templates are stored
-     */
-    public function old__construct(array $daoArray,$isApiCall = false,$modelClass,$viewsFolder,BaseLang $lang)
-    {
-        $this->isApiCall = $isApiCall;
-        $this->daoArray = $daoArray;
-        $this->modelClass = $modelClass;
-        $this->lang = $lang;
-
-        if(!empty($viewsFolder) && is_dir($viewsFolder))
-        {
-            $this->viewsFolder = $viewsFolder;
-        }
-        else
-        {
-            //If no views folder is specified or doesn't exist, base views folder is set
-            $this->viewsFolder = FRAMEWORK_DIR."modules/base/view";
-        }
-    }
 
     /**
      *
      * BaseController constructor.
      * @param $isApiCall  bool   Indicates if is an api call, or a call to the view
      * @param $daoArray  array  Data Access Objects that will be used in the controller. As default, in BaseController, the first DAO in array is used
-     * @param $modelClass string Model Class that will be used in the controller
-     * @param $lang LanguageService Language object that has a dictionary with words references in the user language
+      * @param $lang LanguageService Language object that has a dictionary with words references in the user language
      * @param $viewsFolder string Folder where the templates are stored
      */
-    function __construct($isApiCall = null,$daoArray = null,LanguageService $lang = null,$modelClass=null,$viewsFolder=null)
+    function __construct($isApiCall = null,$daoArray = null,LanguageService $lang = null,$viewsFolder=null)
     {
         if(empty($daoArray))
         {
@@ -79,10 +50,6 @@ class BaseController
 
         }
 
-        if(empty($modelClass))
-        {
-            $modelClass = ModuleService::GetModuleModel($this);
-        }
 
         if(empty($viewsFolder))
         {
@@ -99,7 +66,6 @@ class BaseController
 
         $this->isApiCall = $isApiCall;
         $this->daoArray = $daoArray;
-        $this->modelClass = $modelClass;
         $this->lang = $lang;
 
         if(!empty($viewsFolder) && is_dir($viewsFolder))
@@ -140,7 +106,7 @@ class BaseController
 
         $results = $dao->read($filter);
 
-        $ModelClass = $this->modelClass;
+        $ModelClass = ModuleService::GetModuleModel($dao);
         $ModelClass::PrintSerializeArray($results,$this->lang);
 
         $this->sendResponse(["results"=>$results],"list");
@@ -151,7 +117,9 @@ class BaseController
     {
         $dao = reset($this->daoArray);
 
-        $model = new $this->modelClass ();
+        $ModelClass = ModuleService::GetModuleModel($dao);
+
+        $model = new $ModelClass();
 
         $model = $model->ObjectFromArray($_POST);
 
@@ -170,7 +138,9 @@ class BaseController
     {
         $dao = reset($this->daoArray);
 
-        $model = new $this->modelClass ();
+        $ModelClass = ModuleService::GetModuleModel($dao);
+
+        $model = new $ModelClass();
 
         $model = $model->ObjectFromArray($_POST);
 
