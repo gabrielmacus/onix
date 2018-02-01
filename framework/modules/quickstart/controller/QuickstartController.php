@@ -8,15 +8,13 @@
 
 namespace framework\modules\quickstart\controller;
 
-
-use framework\modules\configuration\controller\ConfigurationController;
-use framework\modules\configuration\model\Configuration;
+use framework\modules\base\controller\BaseController;
 use framework\modules\configuration\model\ConfigurationDAO;
 use framework\modules\quickstart\lang\QuickstartLang;
 use framework\services\LanguageService;
 
 
-class QuickstartController extends ConfigurationController
+class QuickstartController extends BaseController
 {
     function __construct($isApiCall)
     {
@@ -30,16 +28,36 @@ class QuickstartController extends ConfigurationController
         $this->loadTemplates();
 
         $this->daoArray[] = new ConfigurationDAO() ;
-        $this->modelClass="framework\\modules\\configuration\\model\\Configuration";
 
 
     }
 
-    /*
+
     public function create()
     {
-        throw new \Exception("actionNotAvailable",404);
-    }*/
+
+        $step = (!empty($_GET["s"]))?$_GET["s"]:1;
+
+        switch ($step):
+
+            case 1:
+
+              //RouteService::CheckConfigurationExistence()
+
+                //$this->daoArray[0]->Create();
+
+
+                break;
+            case 2:
+
+                break;
+
+        endswitch;
+
+
+
+       // throw new \Exception("actionNotAvailable",404);
+    }
     public function update()
     {
         throw new \Exception("actionNotAvailable",404);

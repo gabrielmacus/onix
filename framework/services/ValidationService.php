@@ -122,4 +122,17 @@ class ValidationService
         return !empty($string);
     }
 
+    /**
+     *
+     * @param $string
+     * @param $pattern
+     * @param $options
+     * @see http://php.net/manual/es/function.mb-ereg-match.php
+     * @return bool
+     */
+    static function MatchesExp($string,$pattern,$options =null)
+    {
+        return mb_ereg_match($pattern,$string,$options);
+    }
+
 }

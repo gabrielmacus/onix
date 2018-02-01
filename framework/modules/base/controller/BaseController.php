@@ -17,6 +17,7 @@ use League\Plates\Engine;
 class BaseController
 {
 
+    //TODO: delete $modelClass. This is because i can detect the models i need from the $daoArray, using ModuleService
     protected $isApiCall;
     protected $daoArray;
     protected $viewsFolder;

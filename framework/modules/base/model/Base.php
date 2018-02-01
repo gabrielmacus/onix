@@ -142,9 +142,10 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
             $prop = (!empty($this[$rule[1]]))?$this->$rule[1]:null;
 
 
-                if(empty($prop) xor !empty($this->_id))
+                if((!isset($prop) xor isset($this->_id)) || isset($prop))
                 {
-                    //If a property is empty or the model is updating, but not both
+
+                     //If a property is empty or the model is updating, but not both, or in case the property is set
 
                     $params = array_merge([$prop],$rule[2]);
 
@@ -152,7 +153,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
                     if(!call_user_func_array("framework\\services\\ValidationService::{$rule[0]}",$params))//if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
                     {
 
-                        $result[$rule[1]][] = $lang->i18n($rule[3]);
+                        $result[$rule[1]][] = ["text"=>$lang->i18n($rule[3])];
 
                     }
                 }

@@ -54,8 +54,16 @@ class Configuration extends FileStorage
     {
         $rules = parent::rules();
 
+        $rules[] = ['InRange','db_port',[1,65535,true] ,"portRangeAllowed:1,65535"];
 
-        $rules[] = ['InRange','db_port',[1,10,true] ,'portRangeAllowed:1,10'];
+        $rules[] = ['MatchesExp','app_name',['^[a-zA-Z0-9_. -]{5,30}$'],'appNameNotAllowed'];
+
+
+
+
+
+
+
 
         return $rules; // TODO: Set Config validation rules
     }

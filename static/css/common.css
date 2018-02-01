@@ -1,0 +1,8 @@
+.submitting .button-component [type='submit']
+{
+    display: none;
+}
+.submitting .button-component.submit:after
+{
+    content: '...';
+}

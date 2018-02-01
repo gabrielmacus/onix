@@ -4,7 +4,7 @@
 
 <?php $this->start('step-body') ?>
 
-<form onsubmit="Utils.onSubmit(event)" id="step-1-form" method="post" enctype="application/x-www-form-urlencoded" action="<?php echo preg_replace("/quickstart|quickstart\//","api/quickstart",\framework\services\UrlService::CurrentUrl()) ?>">
+<form id="step-1-form" method="post" enctype="application/x-www-form-urlencoded" action="<?php echo preg_replace("/quickstart|quickstart\//","api/quickstart",\framework\services\UrlService::CurrentUrl()) ?>">
 
 
     <?= $this->fetch('components::input',["name"=>"app_name","label"=>$lang->i18n("app_name")]);?>
@@ -27,7 +27,18 @@
 
 
 </form>
+<script>
 
+    (function() {
+
+        var step1form =new FormElement("step-1-form",function (data,xhr) {
+
+            window.location.href="?s=2";
+        });
+
+    })();
+
+</script>
 
 <?php  $this->stop()?>
 

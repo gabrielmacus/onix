@@ -8,27 +8,45 @@ var k_r_submitter=/^(?:submit|button|image|reset|file)$/i,k_r_success_contrls=/^
 /**
  * Created by Gabriel on 31/01/2018.
  */
+var FormElement=function (id,successCallback,errorCallback) {
 
 
-var Utils =
-    {
-        /**
-         * Process submit event on forms
-         * @param event
-         */
-        onSubmit : function (event,successCallback,errorCallback) {
+    this.element = document.querySelector("#"+id);
+
+    var vue = new Vue({
+        el: "#"+id,
+        data: {errors:{}},
+        methods:{
+            cleanErrors:function (err) {
+
+                Vue.delete(this.errors,err);
+            }
+        }
+    })
+
+    /**
+     * Process submit event on forms
+     * @param event
+     * @param successCallback
+     * @param errorCallback
+     *
+     */
+    document.querySelector("#"+id).onsubmit = function (event) {
 
             event.preventDefault();
+
+
+
+
 
             var method = event.srcElement.method;
             var enc  = event.srcElement.enctype;
             var data = serialize(event.srcElement,{hash:true,empty:true});
             var action  = event.srcElement.action;
 
-            var submitButton =  event.srcElement.querySelector(".button-component.submit");
+           event.srcElement.classList.add("submitting");
 
 
-            submitButton.classList.add("submitting");
 
 
             switch (enc)
@@ -36,7 +54,7 @@ var Utils =
                 case "multipart/form-data":
 
                     /*
-                    * var form = document.querySelector('form');
+                     * var form = document.querySelector('form');
                      var data = new FormData(form);
                      var req = new XMLHttpRequest();
                      req.send(data);*/
@@ -52,14 +70,15 @@ var Utils =
                     })
                         .success(function (data, xhr) {
 
-                              if(successCallback){
+                            if(successCallback){
                                 return successCallback(data,xhr);
-                              }
+                            }
 
 
 
                         })
                         .error(function (error,xhr) {
+                            console.log(xhr);
                             // What do when the request fails
                             if(errorCallback)
                             {
@@ -72,12 +91,20 @@ var Utils =
                                 for(var k in error.errors)
                                 {
 
+                                    Vue.set(vue.errors,k,error.errors[k]);
+
                                 }
 
+
+                            }
+                            else
+                            {
+                                //TODO: replace the default alert popup with a customized one
+                                alert(error);
                             }
                         })
                         .always(function (data, xhr) {
-                            submitButton.classList.remove("submitting");
+                            event.srcElement.classList.remove("submitting");
                         });
 
 
@@ -88,5 +115,14 @@ var Utils =
 
 
 
-        }
+
+    };
+
+
+
+}
+
+var Utils =
+    {
+
     };
