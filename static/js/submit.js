@@ -41,6 +41,7 @@ var FormElement=function (id,successCallback,errorCallback) {
 
             var method = event.srcElement.method;
             var enc  = event.srcElement.enctype;
+            //TODO: load data as vue object, instead of serializing it from the form
             var data = serialize(event.srcElement,{hash:true,empty:true});
             var action  = event.srcElement.action;
 
@@ -100,7 +101,8 @@ var FormElement=function (id,successCallback,errorCallback) {
                             else
                             {
                                 //TODO: replace the default alert popup with a customized one
-                                alert(error);
+                                var errorMsg = (typeof error == "object")?error.error:error;
+                                alert(errorMsg);
                             }
                         })
                         .always(function (data, xhr) {

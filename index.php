@@ -12,7 +12,6 @@ use Phroute\Phroute\RouteCollector;
 try
 {
 
-
    $router = new RouteCollector();
 
 
@@ -125,7 +124,10 @@ try
 catch (Exception $e)
 {
 
-    http_response_code($e->getCode());
+    $code = ($e->getCode()==0)?500:$e->getCode();
+
+
+    http_response_code($code);
 
    switch (true)
    {
@@ -137,7 +139,9 @@ catch (Exception $e)
            break;
 
        default:
-           var_dump($e);
+
+           echo json_encode(["error"=>$e->getMessage()]);
+           // var_dump($e);
            break;
    }
 }

@@ -23,12 +23,13 @@ class QuickstartLang extends ConfigurationLang
         $this->langArray["es"]["stepNumber"] ="Paso {0}";
         $this->langArray["es"]["quickstartWelcome"] ="Bienvenido, a continuación deberá seguir una serie de pasos para configurar y poder usar el panel de administración";
         $this->langArray["es"]["superadminData"] ="Datos del usuario Superadministrador";
-
-
-
+        $this->langArray["es"]["stepImportantMessage"] = "<b>Importante:</b> no divulgue por ningún medio estos datos, de lo contrario su sitio y/o aplicación quedarán expuestos a atacantes";
 
         //Errors
         $this->langArray["es"]["initialConfigNotSet"] = "Configuración inicial inexistente";
+        $this->langArray["es"]["step1NotAvailable"] = "Ya completo el paso 1. Por favor, complete el paso 2";
+        $this->langArray["es"]["step2NotAvailable"] = "Debe completar el paso 1 primero";
+
 
 
         return $this->langArray;

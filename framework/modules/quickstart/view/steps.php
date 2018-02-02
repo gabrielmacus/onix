@@ -26,6 +26,13 @@
                 <?= $lang->i18n("stepImportantMessage") ?>
             </p>
 
+            <?php if(!empty($_COOKIE["step_not_available"])): ?>
+            <span class="step-error"><?= $_COOKIE["step_not_available"]; ?></span>
+            <?php
+            setcookie("step_not_available","");
+            endif;
+            ?>
+
         </div>
 
         <footer>

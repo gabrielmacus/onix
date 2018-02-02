@@ -20,8 +20,9 @@ class UrlService
        return explode('.', $_SERVER["HTTP_HOST"])[0];
 
     }
-    static function CurrentUrl()
+    static function CurrentUrl($requestUri = false)
     {
-        return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $url =(isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+        return (!$requestUri)?$url:$url.$_SERVER["REQUEST_URI"];
     }
 }

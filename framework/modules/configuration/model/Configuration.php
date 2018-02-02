@@ -12,6 +12,7 @@ namespace framework\modules\configuration\model;
 
 use framework\modules\base\model\Base;
 use framework\modules\fileStorage\model\FileStorage;
+use framework\services\UrlService;
 
 class Configuration extends FileStorage
 {
@@ -33,7 +34,7 @@ class Configuration extends FileStorage
 
         //Site parameters
         $model["site_name"]="";
-        $model["site_url"]="";
+        $model["site_url"] = UrlService::CurrentUrl();
 
 
         //DB config

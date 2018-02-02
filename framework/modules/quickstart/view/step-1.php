@@ -4,12 +4,10 @@
 
 <?php $this->start('step-body') ?>
 
-<form id="step-1-form" method="post" enctype="application/x-www-form-urlencoded" action="<?php echo preg_replace("/quickstart|quickstart\//","api/quickstart",\framework\services\UrlService::CurrentUrl()) ?>">
+<form id="step-1-form" method="post" enctype="application/x-www-form-urlencoded" action="<?= "/api/quickstart" ?>">
 
 
     <?= $this->fetch('components::input',["name"=>"app_name","label"=>$lang->i18n("app_name")]);?>
-
-    <?= $this->fetch('components::input',["name"=>"app_url","label"=>$lang->i18n("app_url")]);?>
 
     <?= $this->fetch('components::input',["name"=>"site_name","label"=>$lang->i18n("site_name")]);?>
 

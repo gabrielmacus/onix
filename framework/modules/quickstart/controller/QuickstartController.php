@@ -10,6 +10,7 @@ namespace framework\modules\quickstart\controller;
 
 use framework\modules\base\controller\BaseController;
 use framework\modules\configuration\controller\ConfigurationController;
+use framework\modules\configuration\model\Configuration;
 use framework\modules\configuration\model\ConfigurationDAO;
 use framework\modules\quickstart\lang\QuickstartLang;
 use framework\services\LanguageService;
@@ -36,20 +37,19 @@ class QuickstartController extends BaseController
     public function create()
     {
 
+
+
         $step = (!empty($_GET["s"]))?$_GET["s"]:1;
 
-
-        $configuration= RouteService::CheckConfiguration();
+        $configuration  = $this->checkStepAccess();
 
         switch ($step):
 
             case 1:
 
-              if($configuration)
-              {
-                header("Location: ".$configuration["app_url"]."quickstart?s=2");
-              }
                 $_POST["active"]="true";
+
+                $_POST["app_url"]="";
                 $cController = new ConfigurationController($this->isApiCall,[reset($this->daoArray)]);
                 $cController->create();
 
@@ -65,6 +65,59 @@ class QuickstartController extends BaseController
 
        // throw new \Exception("actionNotAvailable",404);
     }
+
+
+    /**
+     * Check if certain step of the quickstart configuration is available. For example,if you didn't complete step 1, you can't go straight to step 2
+     * @return void|Configuration
+     * @throws \Exception
+     */
+    private function checkStepAccess()
+    {
+        $step = (!empty($_GET["s"]))?$_GET["s"]:1;
+        $configuration= RouteService::CheckConfiguration();
+        switch ($step)
+        {
+            case 1 :
+                //If initial configuration is already set, go to step 1
+                if($configuration)
+                {
+                    if(!$this->isApiCall)
+                    {
+                        setcookie("step_not_available",$this->lang->i18n("step1NotAvailable"));
+
+                        header("Location: ".$configuration["app_url"]."quickstart?s=2");
+                        exit();
+                    }
+
+                    throw new \Exception($this->lang->i18n("step1NotAvailable"),400);
+
+
+                }
+
+                break;
+
+            case 2:
+                if(!$configuration)
+                {
+                    if(!$this->isApiCall)
+                    {
+                        setcookie("step_not_available",$this->lang->i18n("step2NotAvailable"));
+                        header("Location: /quickstart?s=1");
+                        exit();
+                    }
+
+                    throw new \Exception($this->lang->i18n("step2NotAvailable"),400);
+
+                }
+
+
+                break;
+        }
+
+        return $configuration;
+    }
+
     public function update()
     {
         throw new \Exception("actionNotAvailable",404);
@@ -75,6 +128,7 @@ class QuickstartController extends BaseController
     }
     public function index()
     {
+        $configuration  = $this->checkStepAccess();
         $step = (!empty($_GET["s"]))?$_GET["s"]:1;
 
         if(!$step || !$this->tplEngine->exists("step-{$step}"))

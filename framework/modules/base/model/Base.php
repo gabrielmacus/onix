@@ -139,7 +139,8 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
         foreach ($this->rules() as $rule)
         {
 
-            $prop = (!empty($this[$rule[1]]))?$this->$rule[1]:null;
+            $prop = (!empty($this[$rule[1]]))?$this[$rule[1]]:null;
+
 
 
                 if((!isset($prop) xor isset($this->_id)) || isset($prop))
