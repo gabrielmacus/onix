@@ -65,7 +65,10 @@ class BaseLang
         $this->langArray["es"]["elementDoesntExist"] = "El elemento requerido no existe";
         $this->langArray["es"]["templateNotExists"] = "El template seleccionado no existe";
         $this->langArray["es"]["actionNotAvailable"] = "Acción no disponible";
-
+        $this->langArray["es"]["moduleNotFound"] = "Módulo no encontrado";
+        $this->langArray["es"]["oopsError"] = "Oops... parece que hay un problema";
+        $this->langArray["es"]["pageErrorCode"] ="Error {0}";
+        $this->langArray["es"]["invalidIp"] ="Debe ser una dirección ip válida";
         /**
          *
          */

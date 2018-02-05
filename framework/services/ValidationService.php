@@ -31,6 +31,20 @@ class ValidationService
     }
 
     /**
+     * Validates if the parameter is an ip with valid format
+     * @param string $ip  String to validate
+     * @param bool $emptyIsValid  Sets if, in case of string being empty, is valid or not
+     * @return bool|mixed
+     */
+    static function IsIP($ip,$emptyIsValid = false)
+    {
+
+        $isValid = ($emptyIsValid && empty($ip))?true:filter_var($ip, FILTER_VALIDATE_IP);
+
+        return $isValid;
+    }
+
+    /**
      * Determines if a number is between a range
      *
      * @param $number int Number to evaluate

@@ -18,7 +18,7 @@ define("SITE_DIR",ROOT_DIR."site/");
 
 
 
-function __autoload($class)
+function class_autoload($class)
 {
     $path =  ROOT_DIR.$class.".php";
 
@@ -30,5 +30,5 @@ function __autoload($class)
 
 }
 
-spl_autoload_register('__autoload');
+spl_autoload_register('class_autoload');
 

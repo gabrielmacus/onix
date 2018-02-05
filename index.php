@@ -8,7 +8,6 @@
 include "init.php";
 use Phroute\Phroute\RouteCollector;
 
-
 try
 {
 
@@ -126,22 +125,57 @@ catch (Exception $e)
 
     $code = ($e->getCode()==0)?500:$e->getCode();
 
+    $data =[];
+    switch (true)
+    {
+        case (is_a($e,"\\framework\\modules\\base\\exception\\ValidationException")):
 
-    http_response_code($code);
+            $data = ["validation"=>true,"errors"=>json_decode($e->getMessage(),true)];
+            break;
+
+        default:
+            $data = ["error"=>$e->getMessage()];
+            break;
+    }
+
+    echo \framework\services\RouteService::LoadHttpCode($code,$data);
+    /*
+    $code = ($e->getCode()==0)?500:$e->getCode();
+
+
 
    switch (true)
    {
        case (is_a($e,"\\framework\\modules\\base\\exception\\ValidationException")):
 
            $r = ["validation"=>true,"errors"=>json_decode($e->getMessage(),true)];
-           echo json_encode($r);
+
+        if(isset($GLOBALS["isApiCall"]))
+        {
+            echo json_encode($r);
+        }
+        else
+        {
+            setcookie("validation_errors",json_encode($r["errors"]));
+            header('Location: '.\framework\services\UrlService::CurrentUrl());
+
+        }
+
+
 
            break;
 
        default:
+           if(isset($GLOBALS["isApiCall"])) {
+               echo json_encode(["error"=>$e->getMessage()]);
+           }
+           else
+           {
 
-           echo json_encode(["error"=>$e->getMessage()]);
+           }
+
            // var_dump($e);
            break;
-   }
+   }*/
+
 }

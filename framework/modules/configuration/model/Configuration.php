@@ -59,14 +59,15 @@ class Configuration extends FileStorage
 
         $rules[] = ['MatchesExp','app_name',['^[a-zA-Z0-9_. -]{5,30}$'],'appNameNotAllowed'];
 
+        //$rules[] = ["IsUrl",'app_url',[],'invalidUrl'];
+
+        $rules[] = ["IsUrl",'site_url',[],'invalidUrl'];
+
+        $rules[] = ["IsIP",'db_host',[],'invalidIp'];
 
 
 
-
-
-
-
-        return $rules; // TODO: Set Config validation rules
+        return $rules;
     }
 
     static function BeforeUpdate(Base &$obj)
