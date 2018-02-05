@@ -34,6 +34,8 @@ class ConfigurationLang extends BaseLang
         $this->langArray["es"]["db_port"] = "Puerto de la base de datos";
         $this->langArray["es"]["portRangeAllowed"] = "El rango de puertos permitido es de {0} a {1}";
         $this->langArray["es"]["appNameNotAllowed"] = "El nombre de la aplicación puede contener letras, números, espacios y  '_','.' o '-', siendo de un largo entre 5 y 30 caracteres";
+        $this->langArray["es"]["mainEmailNotValid"] = "Email principal inválido";
+        $this->langArray["es"]["siteNameNotAllowed"] = "El nombre del sitio puede contener letras, números, espacios y  '_','.' o '-', siendo de un largo de 5 a 40 caracteres";
 
 
 

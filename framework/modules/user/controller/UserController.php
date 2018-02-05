@@ -1,12 +1,12 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Puers
- * Date: 19/01/2018
- * Time: 22:03
+ * User: Gabriel
+ * Date: 05/02/2018
+ * Time: 11:00 AM
  */
 
-namespace app\modules\user\controller;
+namespace framework\modules\user\controller;
 
 
 use framework\modules\base\controller\BaseController;

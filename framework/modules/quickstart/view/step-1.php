@@ -7,19 +7,39 @@
 <form id="step-1-form" method="post" enctype="application/x-www-form-urlencoded" action="<?= "/api/quickstart" ?>">
 
 
-    <?= $this->fetch('components::input',["name"=>"app_name","label"=>$lang->i18n("app_name")]);?>
+    <fieldset form="step-1-form">
 
-    <?= $this->fetch('components::input',["name"=>"site_name","label"=>$lang->i18n("site_name")]);?>
+        <legend><?= $lang->i18n("applicationData");?></legend>
 
-    <?= $this->fetch('components::input',["name"=>"site_url","label"=>$lang->i18n("site_url")]);?>
+        <?= $this->fetch('components::input',["name"=>"app_name","label"=>$lang->i18n("app_name")]);?>
 
-    <?= $this->fetch('components::input',["name"=>"db_name","label"=>$lang->i18n("db_name")]);?>
+    </fieldset>
 
-    <?= $this->fetch('components::input',["name"=>"db_pass","label"=>$lang->i18n("db_pass")]);?>
+    <fieldset form="step-1-form">
 
-    <?= $this->fetch('components::input',["name"=>"db_host","label"=>$lang->i18n("db_host")]);?>
+        <legend><?= $lang->i18n("siteData")?></legend>
 
-    <?= $this->fetch('components::input',["type"=>"number","name"=>"db_port","label"=>$lang->i18n("db_port")]);?>
+        <?= $this->fetch('components::input',["name"=>"site_name","label"=>$lang->i18n("site_name")]);?>
+
+        <?= $this->fetch('components::input',["name"=>"site_url","label"=>$lang->i18n("site_url")]);?>
+
+    </fieldset>
+
+
+    <fieldset form="step-1-form">
+        <legend><?= $lang->i18n("dbData");?></legend>
+        <?= $this->fetch('components::input',["name"=>"db_name","label"=>$lang->i18n("db_name")]);?>
+
+        <?= $this->fetch('components::input',["name"=>"db_user","label"=>$lang->i18n("db_user")]);?>
+
+        <?= $this->fetch('components::input',["name"=>"db_pass","label"=>$lang->i18n("db_pass")]);?>
+
+        <?= $this->fetch('components::input',["name"=>"db_host","label"=>$lang->i18n("db_host")]);?>
+
+        <?= $this->fetch('components::input',["type"=>"number","name"=>"db_port","label"=>$lang->i18n("db_port")]);?>
+
+    </fieldset>
+
 
     <?= $this->fetch('components::button',["type"=>"submit","label"=>$lang->i18n("sendForm")]);?>
 

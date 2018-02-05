@@ -16,6 +16,20 @@ namespace framework\services;
  */
 class ValidationService
 {
+
+    /**
+     * Validates if the parameter is an email with valid format
+     * @param string $email String to validate
+     * @param bool $emptyIsValid  Sets if, in case of string being empty, is valid or not
+     * @return bool|mixed
+     */
+    static function IsEmail($email,$emptyIsValid = false)
+    {
+
+        $isValid = ($emptyIsValid && empty($email))?true:filter_var($email, FILTER_VALIDATE_EMAIL);
+
+        return $isValid;
+    }
     /**
      * Validates if the parameter is an url with valid format
      * @param string $url String to validate
@@ -140,13 +154,19 @@ class ValidationService
      *
      * @param $string
      * @param $pattern
+     * @param $emptyIsValid
      * @param $options
      * @see http://php.net/manual/es/function.mb-ereg-match.php
      * @return bool
      */
-    static function MatchesExp($string,$pattern,$options =null)
+    static function MatchesExp($string,$pattern,$emptyIsValid=false,$options =null)
     {
-        return mb_ereg_match($pattern,$string,$options);
+        if(!empty($string) || !$emptyIsValid)
+        {
+            return mb_ereg_match($pattern,$string,$options);
+        }
+
+        return true;
     }
 
 }

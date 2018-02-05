@@ -69,6 +69,7 @@ class BaseLang
         $this->langArray["es"]["oopsError"] = "Oops... parece que hay un problema";
         $this->langArray["es"]["pageErrorCode"] ="Error {0}";
         $this->langArray["es"]["invalidIp"] ="Debe ser una dirección ip válida";
+        $this->langArray["es"]["shouldntBeEmpty"] ="No debe estar vacio";
         /**
          *
          */

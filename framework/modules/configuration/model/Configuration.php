@@ -26,6 +26,16 @@ class Configuration extends FileStorage
 
         $model["active"] = false;
 
+        //Email parameters
+        $model["email_host"] ="";
+        $model["email_is_smtp"] = true;
+        $model["email_smtp_auth"]=true;
+        $model["email_username"] ="";
+        $model["email_password"]="";
+        $model["email_smtp_secure"]="tls";
+        $model["email_port"]=587;
+
+
         //App parameters
         $model["app_name"]="";
         $model["app_url"]="";
@@ -61,9 +71,32 @@ class Configuration extends FileStorage
 
         //$rules[] = ["IsUrl",'app_url',[],'invalidUrl'];
 
-        $rules[] = ["IsUrl",'site_url',[],'invalidUrl'];
+        $rules[] = ["MatchesExp",'site_name',['^[a-zA-Z0-9_. -]{5,40}$',true],'siteNameNotAllowed'];
+
+        $rules[] = ["IsUrl",'site_url',[true],'invalidUrl'];
+
+
 
         $rules[] = ["IsIP",'db_host',[],'invalidIp'];
+
+        $rules[] = ['NotEmpty','db_user',[] ,"shouldntBeEmpty"];
+
+        $rules[] = ['MatchesLength','db_name',[2,100],'lengthBetween:2,100'];
+
+
+
+        $rules[] = ["IsEmail","email_username",[],'mainEmailNotValid'];
+
+        $rules[] = ["IsUrl","email_host",[],'invalidUrl'];
+
+        $rules[] = ['InRange','email_port',[1,65535,true] ,"portRangeAllowed:1,65535"];
+
+
+
+
+
+
+
 
 
 
