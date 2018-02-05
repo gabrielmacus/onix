@@ -28,11 +28,10 @@ class Configuration extends FileStorage
 
         //Email parameters
         $model["email_host"] ="";
-        $model["email_is_smtp"] = true;
         $model["email_smtp_auth"]=true;
+        $model["email_smtp_secure"]="tls";
         $model["email_username"] ="";
         $model["email_password"]="";
-        $model["email_smtp_secure"]="tls";
         $model["email_port"]=587;
 
 

@@ -27,6 +27,7 @@ class QuickstartLang extends ConfigurationLang
         $this->langArray["es"]["applicationData"]="Datos de la aplicación";
         $this->langArray["es"]["siteData"] = "Datos del sitio";
         $this->langArray["es"]["dbData"]="Datos de la BD";
+        $this->langArray["es"]["emailData"]="Datos de email";
         //Errors
         $this->langArray["es"]["initialConfigNotSet"] = "Configuración inicial inexistente";
         $this->langArray["es"]["step1NotAvailable"] = "Ya completo el paso 1. Por favor, complete el paso 2";

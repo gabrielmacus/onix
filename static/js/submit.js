@@ -15,7 +15,7 @@ var FormElement=function (id,successCallback,errorCallback) {
 
     var vue = new Vue({
         el: "#"+id,
-        data: {errors:{}},
+        data: {errors:{},model:{}},
         methods:{
             cleanErrors:function (err) {
 
@@ -41,8 +41,9 @@ var FormElement=function (id,successCallback,errorCallback) {
 
             var method = event.srcElement.method;
             var enc  = event.srcElement.enctype;
-            //TODO: load data as vue object, instead of serializing it from the form
-            var data = serialize(event.srcElement,{hash:true,empty:true});
+            //var data = serialize(event.srcElement,{hash:true,empty:true});
+            var data = JSON.parse(JSON.stringify(vue.model));
+
             var action  = event.srcElement.action;
 
            event.srcElement.classList.add("submitting");
