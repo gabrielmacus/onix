@@ -186,7 +186,8 @@ class BaseController
 
             $response["bodyClass"][] = ModuleService::GetModule($this);
 
-
+            //For calling static methods, like BuildForm
+            $response["ModelClass"]  = ModuleService::GetModuleModel($this);
 
             $response["lang"] = $this->lang;
 

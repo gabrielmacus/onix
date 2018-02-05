@@ -33,8 +33,11 @@ class ConfigurationLang extends BaseLang
         $this->langArray["es"]["db_host"] = "Host de la base de datos";
         $this->langArray["es"]["db_port"] = "Puerto de la base de datos";
         $this->langArray["es"]["email_host"] = "Host de email";
-        $this->langArray["es"]["email_smtp_secure"] = "¿Activar autenticación SMTP?";
-
+        $this->langArray["es"]["email_smtp_auth"] = "¿Activar autenticación SMTP?";
+        $this->langArray["es"]["email_smtp_secure"]="Tipo de autenticación SMTP";
+        $this->langArray["es"]["email_username"] = "Dirección de email";
+        $this->langArray["es"]["email_password"] = "Contraseña de email";
+        $this->langArray["es"]["email_port"] = "Puerto de email";
         //Errors
         $this->langArray["es"]["portRangeAllowed"] = "El rango de puertos permitido es de {0} a {1}";
         $this->langArray["es"]["appNameNotAllowed"] = "El nombre de la aplicación puede contener letras, números, espacios y  '_','.' o '-', siendo de un largo entre 5 y 30 caracteres";

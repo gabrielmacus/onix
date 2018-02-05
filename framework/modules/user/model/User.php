@@ -14,13 +14,13 @@ use framework\modules\base\model\Base;
 class User extends Base
 {
 
-    function model()
+    static function Model()
     {
-        $model = parent::model();
-        $model["username"]="";
-        $model["name"]="";
-        $model["surname"]="";
-        $model["email"]="";
+        $model = Base::Model();
+        $model["username"]= ["value"=>""];
+        $model["name"]= ["value"=>""];
+        $model["surname"]= ["value"=>""];
+        $model["email"]= ["value"=>""];
 
         return $model;
     }

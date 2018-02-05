@@ -17,14 +17,14 @@ class Post extends Base
 
 
 
-    function model()
+    static function Model()
     {
-        $model = parent::model();
+        $model = Base::Model();
 
-        $model["title"]="";
-        $model["subtitle"]="";
-        $model["text"]="";
-        $model["slug"]="";
+        $model["title"]=["value"=>""];
+        $model["subtitle"]=["value"=>""];
+        $model["text"]=["value"=>""];
+        $model["slug"]=["value"=>""];
 
 
         return $model;

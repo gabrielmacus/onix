@@ -16,43 +16,42 @@ use framework\services\UrlService;
 
 class Configuration extends FileStorage
 {
-    function model()
+    static function Model()
     {
-        $model = parent::model();
+        $model = Base::Model();
 
-        $model["_id"]="";
+        $model["_id"]= ["value"=>"",'printable'=>false];
         //TESTING,DEVELOPMENT or PRODUCTION
-        $model["env"] ="DEVELOPMENT";
+        $model["env"] =["value"=>"DEVELOPMENT"];
 
-        $model["active"] = false;
-
-        //Email parameters
-        $model["email_host"] ="";
-        $model["email_smtp_auth"]=true;
-        $model["email_smtp_secure"]="tls";
-        $model["email_username"] ="";
-        $model["email_password"]="";
-        $model["email_port"]=587;
+        $model["active"] = ["value"=>false];
 
 
         //App parameters
-        $model["app_name"]="";
-        $model["app_url"]="";
+        $model["app_name"]= ["value"=>""];
+        $model["app_url"]= ["value"=>UrlService::CurrentUrl()];
         //TODO: set an id for every app that is deployed
-        $model["app_id"] ="";
+        $model["app_id"] = ["value"=>""];
 
         //Site parameters
-        $model["site_name"]="";
-        $model["site_url"] = UrlService::CurrentUrl();
-
+        $model["site_name"]= ["value"=>""];
+        $model["site_url"] =  ["value"=>""];
 
         //DB config
-        $model["db_name"]="";
-        $model["db_user"]="";
-        $model["db_pass"]="";
-        $model["db_port"]="";
-        $model["db_host"]="";
+        $model["db_name"]=["value"=>""];
+        $model["db_user"]=["value"=>""];
+        $model["db_pass"]=["value"=>""];
+        $model["db_port"]=["value"=>""];
+        $model["db_host"]=["value"=>""];
 
+        //Email parameters
+        $model["email_host"] = ["value"=>""];
+        //$model["email_smtp_auth"]= ["value"=>true];
+        //If empty, email smtp auth is false
+        $model["email_smtp_secure"]= ["value"=>"tls"];
+        $model["email_username"] = ["value"=>""];
+        $model["email_password"]= ["value"=>""];
+        $model["email_port"]= ["value"=>587];
 
 
         return $model;
@@ -90,6 +89,7 @@ class Configuration extends FileStorage
 
         $rules[] = ['InRange','email_port',[1,65535,true] ,"portRangeAllowed:1,65535"];
 
+        $rules[] = ['InRange','email_password',[1,65535,true] ,"shouldntBeEmpty"];
 
 
 

@@ -15,6 +15,7 @@ use framework\services\ModuleService;
 use framework\services\TimeService;
 use framework\services\ValidationService;
 use framework\traits\Magic;
+use League\Plates\Engine;
 
 class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 {
@@ -26,27 +27,78 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
     protected $_type;
     protected $_id;*/
 
-
     /**
-     * Defines properties of the model.
+     * Defines properties of the model. Also, extra data was added to use this to build up form fields
      * Format is:
-     * $model  = ['property_name'=>'default_value']
+     * $model  = ['printable'=>'Set if the field will be printed in form. Default true','property_name'=>['value'=>'default_value','component'=>'type of form component, eg: input,select,etcetera' ,'attributes'=>[array of attributes that will be used in the component, eg: options to a select component]   ]]
+     * If 'component' isn't set, 'input' is used as default
      * @return array
      */
-    function model()
+    static function Model()
     {
         $model =
             [
-                "updated_at" => "",
-                "created_at" =>TimeService::now(),
-                "_type" => ""
+                "updated_at" => ["value" => "",'printable'=>false],
+                "created_at" => ["value" => TimeService::now(),'printable'=>false],
+                "_type" => ["value" => "",'printable'=>false]
             ];
-       return  $model;
+        return $model;
+    }
+
+    /**
+     * Builds up a html form, based on the array obtained from Model(). This may be overriden in children classes, to adapt it's functionality
+     * Note: $offset and $length params are useful to divide form fields in containers or fieldsets
+     * @param $lang BaseLang Lang class to be used in form components
+     * @param  $offset int Index of the property to start
+     * @param  $length int|null Number of properties that will be printed in the form, starting from the offset
+     * @param  $excluded array Excluded properties from the form
+     * @return string
+     * @see $this->Model()
+     */
+    static function BuildForm(BaseLang $lang,$offset = 0, $length = null,array $excluded =[])
+    {
+        $model = array_filter(
+            static::Model(),
+            function($v){
+                $printable = (!isset($v["printable"]) || (isset($v["printable"]) && $v["printable"] === true))?true:false;
+
+                return $printable;
+
+            }
+            );
+
+
+
+
+           $model  = array_slice($model, $offset, $length);
+        $tplEngine = new Engine(FRAMEWORK_DIR . "/modules/gui-components/view");
+
+        ob_start();
+
+        foreach ($model as $prop => $v) {
+
+           if(!in_array($prop,$excluded))
+           {
+               $component = (!empty($v["component"])) ? $v["component"] : "input";
+
+               $data = ['prop' => $prop,'label'=>$lang->i18n($prop)] + (!empty($v["attributes"]) ? $v["attributes"] : []);
+
+               echo $tplEngine->render($component, $data);
+           }
+
+        }
+
+        $form = ob_get_contents();
+        ob_end_clean();
+
+        return $form;
+
+
     }
 
     /**
      * Cleans properties that aren't defined on Model() from an object
-     * @see model()
+     * @see Model()
      * @param Base $obj Object to be cleaned
      */
     static function CleanModel(Base &$obj)
@@ -56,7 +108,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
         foreach ($obj as $k=>$v)
         {
 
-            if(!isset($obj->model()[$k]))
+            if(!isset(Base::Model()[$k]))
             {
                 unset($obj[$k]);
             }
@@ -66,17 +118,17 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 
     /**
      * Sets default property values, according to Model(), to an object
-     * @see model()
+     * @see Model()
      * @param Base $obj Object that will be set
      */
     static function SetDefaultProperties(Base &$obj)
     {
         //Sets default data
-        foreach ($obj->model() as $property => $default)
+        foreach (Base::Model() as $property => $v)
         {
             if(!isset($obj[$property]))
             {
-                $obj[$property] = $default;
+                $obj[$property] = $v["value"];
             }
         }
     }
