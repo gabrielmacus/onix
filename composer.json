@@ -11,6 +11,7 @@
   ],
   "require": {
     "phroute/phroute": "v2.1.0",
-    "league/plates": "3.3.0"
+    "league/plates": "3.3.0",
+    "phpmailer/phpmailer": "v6.0.3"
   }
 }

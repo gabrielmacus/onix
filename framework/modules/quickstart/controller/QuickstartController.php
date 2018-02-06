@@ -13,6 +13,9 @@ use framework\modules\configuration\controller\ConfigurationController;
 use framework\modules\configuration\model\Configuration;
 use framework\modules\configuration\model\ConfigurationDAO;
 use framework\modules\quickstart\lang\QuickstartLang;
+use framework\modules\quickstart\model\Quickstart;
+use framework\modules\quickstart\model\QuickstartDAO;
+use framework\modules\user\controller\UserController;
 use framework\services\LanguageService;
 use framework\services\RouteService;
 
@@ -29,6 +32,8 @@ class QuickstartController extends BaseController
         $this->loadTemplates();
 
         $this->daoArray[]=new ConfigurationDAO();
+
+        $this->daoArray[]= new QuickstartDAO();
 
 
     }
@@ -56,6 +61,15 @@ class QuickstartController extends BaseController
 
                 break;
             case 2:
+
+                //Creates user
+                $uController = new UserController($this->isApiCall );
+                $uController->create();
+
+                //Saves quickstart instance, and leaves a record that initial config was set
+                $qs = new Quickstart();
+                $this->daoArray[1]->Create($qs);
+
 
                 break;
 
@@ -98,7 +112,21 @@ class QuickstartController extends BaseController
                 break;
 
             case 2:
-                if(!$configuration)
+
+                if(count($this->daoArray[1]->Read([])) == 1){
+
+                    if(!$this->isApiCall)
+                    {
+                        header("Location: /");
+                        exit();
+                    }
+
+                    throw new \Exception($this->lang->i18n("quickstartAlreadyCompleted"),400);
+
+
+                }
+
+                if(!$configuration )
                 {
                     if(!$this->isApiCall)
                     {
@@ -128,6 +156,11 @@ class QuickstartController extends BaseController
     }
     public function index()
     {
+        if($this->isApiCall)
+        {
+            throw new \Exception("actionNotAvailable",404);
+        }
+
         $configuration  = $this->checkStepAccess();
         $step = (!empty($_GET["s"]))?$_GET["s"]:1;
 

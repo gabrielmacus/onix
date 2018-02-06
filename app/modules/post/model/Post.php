@@ -19,7 +19,7 @@ class Post extends Base
 
     static function Model()
     {
-        $model = Base::Model();
+        $model = parent::Model();
 
         $model["title"]=["value"=>""];
         $model["subtitle"]=["value"=>""];

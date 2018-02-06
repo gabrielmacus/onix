@@ -9,6 +9,8 @@
 namespace framework\modules\quickstart\lang;
 
 use framework\modules\configuration\lang\ConfigurationLang;
+use framework\modules\user\lang\UserLang;
+use framework\services\DebugService;
 
 class QuickstartLang extends ConfigurationLang
 {
@@ -32,8 +34,13 @@ class QuickstartLang extends ConfigurationLang
         $this->langArray["es"]["initialConfigNotSet"] = "Configuración inicial inexistente";
         $this->langArray["es"]["step1NotAvailable"] = "Ya completo el paso 1. Por favor, complete el paso 2";
         $this->langArray["es"]["step2NotAvailable"] = "Debe completar el paso 1 primero";
+        $this->langArray["es"]["quickstartAlreadyCompleted"] ="La configuración inicial ya fue completada";
 
 
+        //Loads lang phrases from user module also
+        $userLang  = new UserLang($this->language);
+
+        $this->langArray =  array_replace_recursive($userLang->langArray,$this->langArray);
 
         return $this->langArray;
     }

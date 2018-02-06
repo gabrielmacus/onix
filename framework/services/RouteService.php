@@ -11,6 +11,8 @@ namespace framework\services;
 
 use framework\modules\configuration\model\Configuration;
 use framework\modules\configuration\model\ConfigurationDAO;
+use framework\modules\mongoConnection\model\MongoConnection;
+use framework\modules\quickstart\model\QuickstartDAO;
 use League\Plates\Engine;
 
 //TODO: Refactor service name
@@ -55,8 +57,9 @@ class RouteService
 
         }
 
+        $qsDao = new QuickstartDAO();
 
-        if( !self::CheckConfiguration() && $ControllerClass != "framework\\modules\\quickstart\\controller\\QuickstartController")
+        if(count($qsDao->Read([])) == 0  && $ControllerClass != "framework\\modules\\quickstart\\controller\\QuickstartController")
         {
 
             //If initial configuration isn't set
@@ -87,10 +90,11 @@ class RouteService
 
     /**
      * Check if an active configuration exists
-     *
+     * @param $throwException boolean If is set to true, throws an excepcion, instead of returning the value, in case it's false
      * @return boolean|Configuration
+     * @throws \Exception
      */
-    static function CheckConfiguration()
+    static function CheckConfiguration($throwException = false)
     {
         $configurationDao = new ConfigurationDAO();
         $configurations =$configurationDao->Read([]);
@@ -105,6 +109,10 @@ class RouteService
                     $currentConfiguration = $configuration;
                     break;
                 }
+        }
+        if($throwException && !$currentConfiguration)
+        {
+            throw new \Exception("configNotLoaded",400);
         }
 
         return $currentConfiguration;
@@ -133,27 +141,37 @@ class RouteService
      */
     static function LoadHttpCode($code,$data)
     {
+
+        $HttpCodesLangClass  = "app\\modules\\httpCodes\\lang\\HttpCodesLang";
+        if(!class_exists($HttpCodesLangClass))
+        {
+            $HttpCodesLangClass  = "framework\\modules\\httpCodes\\lang\\HttpCodesLang";
+
+        }
+        $lang = new $HttpCodesLangClass(LanguageService::detectLanguage());
+
+
         http_response_code($code);
 
         if(!empty($GLOBALS["isApiCall"]))
         {
+            if(!empty($data["error"]))
+            {
+                $data["error"]=$lang->i18n($data["error"]);
+            }
+
             return json_encode($data);
         }
         else
         {
             $httpCodesDir = APP_DIR."modules/httpCodes";
-            $HttpCodesLangClass  = "app\\modules\\httpCodes\\lang\\HttpCodesLang";
 
             if(!is_dir($httpCodesDir))
             {
                 $httpCodesDir = FRAMEWORK_DIR."modules/httpCodes";
             }
 
-            if(!class_exists($HttpCodesLangClass))
-            {
-                $HttpCodesLangClass  = "framework\\modules\\httpCodes\\lang\\HttpCodesLang";
 
-            }
 
             $tplEngine = new Engine($httpCodesDir."/view","php");
 
@@ -163,7 +181,6 @@ class RouteService
 
             $template = $tplEngine->make($view);
 
-            $lang = new $HttpCodesLangClass(LanguageService::detectLanguage());
 
             $data["lang"] = $lang;
 
@@ -174,4 +191,17 @@ class RouteService
 
 
     }
+
+    static function MongoConnection()
+    {
+        $config = self::CheckConfiguration(true);
+        $mongoConnection =  new MongoConnection($config["db_name"],$config["db_user"],$config["db_password"],$config["db_host"],$config["db_port"]);
+        return $mongoConnection;
+
+    }
+
+
+
+
+
 }

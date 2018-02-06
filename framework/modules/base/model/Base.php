@@ -10,6 +10,7 @@ namespace framework\modules\base\model;
 
 use framework\modules\base\exception\ValidationException;
 use framework\modules\base\lang\BaseLang;
+use framework\services\FileService;
 use framework\services\LanguageService;
 use framework\services\ModuleService;
 use framework\services\TimeService;
@@ -30,7 +31,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
     /**
      * Defines properties of the model. Also, extra data was added to use this to build up form fields
      * Format is:
-     * $model  = ['printable'=>'Set if the field will be printed in form. Default true','property_name'=>['value'=>'default_value','component'=>'type of form component, eg: input,select,etcetera' ,'attributes'=>[array of attributes that will be used in the component, eg: options to a select component]   ]]
+     * $model  = ['printable'=>'Set if the field will be printed in form. Default true','property_name'=>['value'=>'default_value','component'=>'type of form component, eg: input,select,etcetera' ,'attributes'=>[array of attributes that will be used in the component, eg: options to a select component, or may be used in component's container]   ]]
      * If 'component' isn't set, 'input' is used as default
      * @return array
      */
@@ -81,7 +82,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
            {
                $component = (!empty($v["component"])) ? $v["component"] : "input";
 
-               $data = ['prop' => $prop,'label'=>$lang->i18n($prop)] + (!empty($v["attributes"]) ? $v["attributes"] : []);
+               $data = ['lang'=>$lang,'prop' => $prop,'label'=>$lang->i18n($prop)] + (!empty($v["attributes"]) ? $v["attributes"] : []);
 
                echo $tplEngine->render($component, $data);
            }
@@ -108,7 +109,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
         foreach ($obj as $k=>$v)
         {
 
-            if(!isset(Base::Model()[$k]))
+            if(!isset(static::Model()[$k]))
             {
                 unset($obj[$k]);
             }
@@ -124,7 +125,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
     static function SetDefaultProperties(Base &$obj)
     {
         //Sets default data
-        foreach (Base::Model() as $property => $v)
+        foreach (static::Model() as $property => $v)
         {
             if(!isset($obj[$property]))
             {
@@ -200,8 +201,8 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 
                      //If a property is empty or the model is updating, but not both, or in case the property is set
 
-                    $params = array_merge([$prop],$rule[2]);
-
+                     $params = array_merge([$prop],$rule[2]);
+                    FileService::SaveData(ROOT_DIR."demo.txt",json_encode($params));
 
                     if(!call_user_func_array("framework\\services\\ValidationService::{$rule[0]}",$params))//if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
                     {
@@ -228,10 +229,10 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
 
     static function BeforeCreate(Base &$obj)
     {
-
         static::CleanModel($obj);
 
         static::SetDefaultProperties($obj);
+
 
         $obj->validate();
 

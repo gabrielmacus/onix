@@ -65,3 +65,8 @@ Reset end
 {
     color: #E53935;
 }
+.form-header
+{
+    font-size: 20px;
+    font-weight: 600;
+}

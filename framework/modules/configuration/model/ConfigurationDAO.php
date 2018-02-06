@@ -20,33 +20,7 @@ class ConfigurationDAO extends FileStorageDAO
     }
 
 
-    function beforeSave(&$base)
-    {
 
-        $base->validate();
-
-        $base::CleanModel($base);
-
-        $base::SetDefaultProperties($base);
-
-
-    }
-
-    function Create(Base &$base)
-    {
-        $this->beforeSave($base);
-
-        return  parent::Create($base);
-    }
-
-    function Update(Base $base)
-    {
-
-
-        $this->beforeSave($base);
-
-       return parent::Update($base);
-    }
 
 
 }

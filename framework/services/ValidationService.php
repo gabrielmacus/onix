@@ -34,12 +34,14 @@ class ValidationService
      * Validates if the parameter is an url with valid format
      * @param string $url String to validate
      * @param boolean $emptyIsValid Sets if, in case of string being empty, is valid or not
+     * @param mixed $flags
+     * @see https://www.w3schools.com/php/filter_validate_url.asp
      * @return mixed
      */
-    static function IsUrl($url,$emptyIsValid = false)
+    static function IsUrl($url,$emptyIsValid = false,$flags = null)
     {
 
-        $isValid = ($emptyIsValid && empty($url))?true:filter_var($url, FILTER_VALIDATE_URL);
+        $isValid = ($emptyIsValid && empty($url))?true:filter_var($url, FILTER_VALIDATE_URL, $flags);
 
         return $isValid;
     }
@@ -167,6 +169,18 @@ class ValidationService
         }
 
         return true;
+    }
+
+    /**
+     *  compares two elements
+     * @param $a
+     * @param $b
+     * @return bool
+     */
+    static function Equals($a,$b,$strict = false)
+    {
+        //TODO: maybe i can set in validate() the posibility to pass a prop as second arg
+       return ($strict)?($a === $b ):($a == $b );
     }
 
 }

@@ -8,8 +8,8 @@
 
     <fieldset form="step-1-form">
 
-        <legend><?= $lang->i18n("applicationData");?></legend>
-        <?= \framework\modules\configuration\model\Configuration::BuildForm($lang,2,3,['app_id']); ?>
+        <legend class="form-header"><?= $lang->i18n("applicationData");?></legend>
+        <?= \framework\modules\configuration\model\Configuration::BuildForm($lang,2,1,['app_id']); ?>
 
 
 
@@ -17,7 +17,7 @@
 
     <fieldset form="step-1-form">
 
-        <legend><?= $lang->i18n("siteData")?></legend>
+        <legend  class="form-header"><?= $lang->i18n("siteData")?></legend>
 
         <?= \framework\modules\configuration\model\Configuration::BuildForm($lang,5,2); ?>
 
@@ -27,16 +27,16 @@
 
 
     <fieldset form="step-1-form">
-        <legend><?= $lang->i18n("dbData");?></legend>
+        <legend  class="form-header"><?= $lang->i18n("dbData");?></legend>
 
         <?= \framework\modules\configuration\model\Configuration::BuildForm($lang,7,5); ?>
     </fieldset>
 
     <fieldset form="step-1-form">
 
-        <legend><?= $lang->i18n("emailData"); ?></legend>
+        <legend  class="form-header"><?= $lang->i18n("emailData"); ?></legend>
 
-        <?= \framework\modules\configuration\model\Configuration::BuildForm($lang,11,5,['email_smtp_auth']); ?>
+        <?= \framework\modules\configuration\model\Configuration::BuildForm($lang,12,6,['email_smtp_auth']); ?>
 
 
     </fieldset>

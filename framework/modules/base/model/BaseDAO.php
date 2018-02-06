@@ -12,6 +12,7 @@ namespace framework\modules\base\model;
 use app\modules\post\model\Post;
 use framework\modules\mongoConnection\model\MongoConnection;
 use framework\services\ModuleService;
+use framework\services\RouteService;
 use framework\traits\Magic;
 
 class BaseDAO implements IDAO
@@ -30,7 +31,8 @@ class BaseDAO implements IDAO
      */
     public function __construct(MongoConnection $connection = null)
     {
-        $this->connection = $connection;
+        //If MongoConnection object isn't passed, loads it from config file
+        $this->connection = (!empty($connection))?$connection:RouteService::MongoConnection();
 
         $this->type = ModuleService::GetModuleModel($this);
 

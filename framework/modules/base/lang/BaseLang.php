@@ -55,9 +55,13 @@ class BaseLang
         $this->langArray["es"]["dateFormat"] = "d-m-Y H:i";
         $this->langArray["es"]["_id"] = "ID";
         $this->langArray["es"]["sendForm"] = "Aceptar";
+        $this->langArray["es"]["yes"] = "Si";
+        $this->langArray["es"]["no"]="No";
+        $this->langArray["es"]["selectAnOption"] = "Seleccione una opción";
         //Errores
         $this->langArray["es"]["invalidUrl"] = "Formato de url no válido";
-        $this->langArray["es"]["lengthBetween"] = "Debe tener ente {0} y {1} caracteres";
+        $this->langArray["es"]["invalidEmail"] = "Email no válido";
+        $this->langArray["es"]["lengthBetween"] = "Debe tener entre {0} y {1} caracteres";
         $this->langArray["es"]["cantBeEmpty"] = "No puede estar vacío";
         $this->langArray["es"]["idNotSpecified"] = "No se especifico un id correcto";
         $this->langArray["es"]["fileNotFound"] = "Archivo no encontrado";
@@ -70,6 +74,7 @@ class BaseLang
         $this->langArray["es"]["pageErrorCode"] ="Error {0}";
         $this->langArray["es"]["invalidIp"] ="Debe ser una dirección ip válida";
         $this->langArray["es"]["shouldntBeEmpty"] ="No debe estar vacio";
+        $this->langArray["es"]["configNotLoaded"]="La configuración no ha sido cargada";
         /**
          *
          */

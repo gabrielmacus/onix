@@ -12,6 +12,7 @@ use framework\modules\base\lang\BaseLang;
 use framework\modules\mongoConnection\model\MongoConnection;
 use framework\services\LanguageService;
 use framework\services\ModuleService;
+use framework\services\RouteService;
 use League\Plates\Engine;
 
 class BaseController
@@ -36,15 +37,15 @@ class BaseController
      * @param $daoArray  array  Data Access Objects that will be used in the controller. As default, in BaseController, the first DAO in array is used
       * @param $lang LanguageService Language object that has a dictionary with words references in the user language
      * @param $viewsFolder string Folder where the templates are stored
+     * @throws \Exception
      */
     function __construct($isApiCall = null,$daoArray = null,LanguageService $lang = null,$viewsFolder=null)
     {
         if(empty($daoArray))
         {
-            //TODO: load database access from config
+
             $daoClass = ModuleService::GetModuleModelDAO($this);
-            $mongoConnection =  new MongoConnection("onix");
-            $dao = new $daoClass($mongoConnection);
+            $dao = new $daoClass();
             $daoArray = [$dao];
 
 

@@ -22,8 +22,6 @@ use framework\services\ModuleService;
 class FileStorageDAO  implements IDAO
 {
 
-    //TODO: Call beforeDelete() and  afterDelete()
-
     protected $filePath;
 
     /**
@@ -45,18 +43,22 @@ class FileStorageDAO  implements IDAO
     }
 
 
+
+
     function Create(Base &$base)
     {
 
 
+        $base::BeforeCreate($base);
         //TODO: Look for better ways to generate unique ids
-        $base->_id = md5(uniqid(rand(), true));
+
+        //Checks if id is already defined (for overriding in children)
+        $base->_id = (empty($base["_id"]))?md5(uniqid(rand(), true)):$base->_id;
 
         $data =  FileService::ReadFile($this->filePath,true);
 
         $data[$base->_id] = $base;
 
-        $base::BeforeCreate($base);
 
         FileService::SaveData($this->filePath,json_encode($data));
 

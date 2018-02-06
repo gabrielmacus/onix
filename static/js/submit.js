@@ -35,9 +35,7 @@ var FormElement=function (id,successCallback,errorCallback) {
 
             event.preventDefault();
 
-
-
-
+                 Vue.set(vue,"errors",{});
 
             var method = event.srcElement.method;
             var enc  = event.srcElement.enctype;
