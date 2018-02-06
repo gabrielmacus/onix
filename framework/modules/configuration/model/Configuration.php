@@ -83,7 +83,7 @@ class Configuration extends FileStorage
 
 
 
-        $rules[] = ["IsEmail","email_username",[],'mainEmailNotValid'];
+        $rules[] = ["NotEmpty","email_username",[],'shouldntBeEmpty'];
 
         $rules[] = ["IsUrl","email_host",[],'invalidUrl'];
 
