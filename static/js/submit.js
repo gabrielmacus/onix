@@ -42,6 +42,8 @@ var FormElement=function (id,successCallback,errorCallback) {
             //var data = serialize(event.srcElement,{hash:true,empty:true});
             var data = JSON.parse(JSON.stringify(vue.model));
 
+
+
             var action  = event.srcElement.action;
 
            event.srcElement.classList.add("submitting");

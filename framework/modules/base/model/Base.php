@@ -195,14 +195,13 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
             $prop = (!empty($this[$rule[1]]))?$this[$rule[1]]:null;
 
 
-
                 if((!isset($prop) xor isset($this->_id)) || isset($prop))
                 {
 
                      //If a property is empty or the model is updating, but not both, or in case the property is set
 
                      $params = array_merge([$prop],$rule[2]);
-                    FileService::SaveData(ROOT_DIR."demo.txt",json_encode($params));
+
 
                     if(!call_user_func_array("framework\\services\\ValidationService::{$rule[0]}",$params))//if(!ValidationService::$rule[0]($prop))    //if(!call_user_func("ValidationService::{$rule[0]}",$prop))
                     {
@@ -210,11 +209,14 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
                         $result[$rule[1]][] = ["text"=>$lang->i18n($rule[3])];
 
                     }
+
+
                 }
 
 
 
         }
+        FileService::SaveData(ROOT_DIR."demo.txt","\n".json_encode($result),true);
 
         if(count($result) > 0)
         {

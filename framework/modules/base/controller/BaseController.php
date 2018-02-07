@@ -14,6 +14,7 @@ use framework\services\LanguageService;
 use framework\services\ModuleService;
 use framework\services\RouteService;
 use League\Plates\Engine;
+use League\Plates\Template\Template;
 
 class BaseController
 {
@@ -95,6 +96,10 @@ class BaseController
         $this->tplEngine->addFolder("base",FRAMEWORK_DIR."/modules/base/view");
 
         $this->tplEngine->addFolder("components",FRAMEWORK_DIR."/modules/gui-components/view");
+
+
+
+
 
         //TODO: may be i can scan the views folder to add template folders
     }
@@ -183,7 +188,22 @@ class BaseController
         {
             $tplEngine = $this->tplEngine;
 
-            $template = $tplEngine->make("{$view}");
+
+            $response["bodyClass"][] = ModuleService::GetModule($this);
+
+            //For calling static methods, like BuildForm
+            $response["ModelClass"]  = ModuleService::GetModuleModel($this);
+
+            $response["lang"] = $this->lang;
+
+
+//Todo: segui aca
+            /*
+            if($this->tplEngine->exists($view))
+            {
+                $template = $tplEngine->make("{$view}");
+            }
+
 
             $response["bodyClass"][] = ModuleService::GetModule($this);
 
@@ -195,6 +215,7 @@ class BaseController
 
             echo $template->render($response);
 
+            */
         }
     }
 

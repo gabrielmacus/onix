@@ -27,6 +27,9 @@ class UserLang extends BaseLang
         $this->langArray["es"]["permission"] = "Permisos del usuario";
         $this->langArray["es"]["superadmin"] ="Superadministrador";
         $this->langArray["es"]["emptyPermissionsSelect"]="No hay permisos para seleccionar";
+        $this->langArray["es"]["registerConfirmationSubject"] = "Confirmación de registro - {0}";
+        $this->langArray["es"]["registerConfirmationTitle"]  ="Solo le queda un paso para ser parte de {0}";
+        $this->langArray["es"]["confirmationLinkText"] = "Link de confirmación";
 
         //Errores
         $this->langArray["es"]["invalidUsername"] = "Nombre de usuario no válido. Debe tener de 5 a 20 caracteres, de los cuales son permitidos letras, números y guiones bajo y medio";

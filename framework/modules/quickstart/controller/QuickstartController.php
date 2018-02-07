@@ -18,6 +18,7 @@ use framework\modules\quickstart\model\QuickstartDAO;
 use framework\modules\user\controller\UserController;
 use framework\services\LanguageService;
 use framework\services\RouteService;
+use framework\services\UrlService;
 
 
 class QuickstartController extends BaseController
@@ -54,7 +55,8 @@ class QuickstartController extends BaseController
 
                 $_POST["active"]="true";
 
-                $_POST["app_url"]="";
+                unset($_POST["app_url"]);
+
                 $cController = new ConfigurationController($this->isApiCall,[reset($this->daoArray)]);
                 $cController->create();
 
@@ -100,7 +102,7 @@ class QuickstartController extends BaseController
                     {
                         setcookie("step_not_available",$this->lang->i18n("step1NotAvailable"));
 
-                        header("Location: ".$configuration["app_url"]."quickstart?s=2");
+                        header("Location: ".UrlService::Join($configuration["app_url"],"quickstart?s=2"));
                         exit();
                     }
 
@@ -131,7 +133,7 @@ class QuickstartController extends BaseController
                     if(!$this->isApiCall)
                     {
                         setcookie("step_not_available",$this->lang->i18n("step2NotAvailable"));
-                        header("Location: /quickstart?s=1");
+                        header("Location: ".UrlService::Join($configuration["app_url"],"quickstart?s=1"));
                         exit();
                     }
 

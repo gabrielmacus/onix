@@ -16,6 +16,8 @@ use framework\services\EmailService;
 use framework\services\LanguageService;
 use framework\services\ModuleService;
 use framework\services\RouteService;
+use framework\services\UrlService;
+
 class User extends Base
 {
 
@@ -27,11 +29,12 @@ class User extends Base
         $model["surname"]= ["value"=>""];
         $model["email"]= ["value"=>""];
         $model["superadmin"] = ["value"=>false,"component"=>"select","attributes"=>["options"=>[1=>"yes",0=>"no"]]];
-
+        $model["validation_code"]=["value"=>false,"printable"=>false];
 
         //Loads permissions to select
         $pDao = new PermissionDAO();
         $permissions = $pDao->Read([]);
+
 
         $model["permission"] = ["value"=>"","component"=>"select","attributes"=>["options"=>$permissions,"vIf"=>"!model.superadmin || model.superadmin == false"]];
 
@@ -46,10 +49,11 @@ class User extends Base
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = ['MatchesExp','username',['/^[a-z\d_-]{5,20}$/i'],'invalidUsername'];
+        $rules[] = ['MatchesExp','username',['^[a-zA-Z\d_-]{5,20}$'],'invalidUsername'];
         $rules[] = ['IsEmail','email',[],'invalidEmail'];
-        $rules[] = ['MatchesExp','name',['^[a-z\d \']{2,70}$'],'invalidName']; //TODO: improve regex, should accept accents and else
-        $rules[] = ['MatchesExp','surname',['^[a-z\d \']{2,70}$'],'invalidSurname']; //TODO: improve regex, should accept accents and else
+        $rules[] = ['MatchesExp','name',['^[a-zA-Z\d \']{2,70}$'],'invalidName']; //TODO: improve regex, should accept accents and else
+        $rules[] = ['MatchesExp','surname',['^[a-zA-Z\d \']{2,70}$'],'invalidSurname']; //TODO: improve regex, should accept accents and else
+
 
         if(empty(self::Model()["permission"]["printable"]))
         {
@@ -80,9 +84,12 @@ class User extends Base
 
         $lang = new $LangClass(LanguageService::detectLanguage());
 
-        if(!EmailService::SendEmail(FRAMEWORK_DIR."/modules/user/view/emails","register-confirmation",["user"=>$this,"lang"=>$lang],$lang->i18n("registerConfirmationSubject"),[$this->email]))
+        $confirmationLink = UrlService::Join($config["app_url"],"user/confirmation?code={$this->validation_code}");
+
+        if(!EmailService::SendEmail(FRAMEWORK_DIR."/modules/user/view/emails","register-confirmation",["confirmationLink"=>$confirmationLink,"appName"=>$config["app_name"],"user"=>$this,"lang"=>$lang],$lang->i18n("registerConfirmationSubject:{$config["app_name"]}"),[$this->email]))
         {
-            throw new ValidationException("errorSendingValidationEmail");
+
+            throw new ValidationException(json_encode(["email"=>[ ["text"=>$lang->i18n("errorSendingValidationEmail")]   ]]));
         }
 
 
@@ -92,8 +99,14 @@ class User extends Base
 
     static function BeforeCreate(Base &$obj)
     {
+
         parent::BeforeCreate($obj);
+
+        //Sets code for user validation
+        $obj["validation_code"] = md5(openssl_random_pseudo_bytes(32));
 
         $obj->sendValidationEmail();
     }
+
+
 }

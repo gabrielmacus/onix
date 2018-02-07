@@ -17,7 +17,7 @@ class EmailService
     static function SendEmail($templatePath,$templateName,$data,$subject,$recipients,$attachments=[],$replyTo=false,$config  = false)
     {
         $config = (empty($config))?RouteService::CheckConfiguration(true):$config;
-        $mail = new PHPMailer(false);
+        $mail = new PHPMailer(true);
         if(!empty($config["email_smtp_secure"]))
         {
             $mail->isSMTP();                                      // Set mailer to use SMTP
@@ -51,6 +51,7 @@ class EmailService
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body =$tplEngine->render($templateName,$data);
+        $mail->CharSet = 'UTF-8';
 
         return $mail->send();
 

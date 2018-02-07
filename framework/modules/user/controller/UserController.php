@@ -14,4 +14,5 @@ use framework\modules\base\controller\BaseController;
 class UserController extends BaseController
 {
 
+
 }

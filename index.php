@@ -10,9 +10,7 @@ use Phroute\Phroute\RouteCollector;
 
 try
 {
-
-   $router = new RouteCollector();
-
+     $router = new RouteCollector();
 
 
     /**
@@ -122,6 +120,7 @@ try
 }
 catch (Exception $e)
 {
+
 
     $code = ($e->getCode()==0)?500:$e->getCode();
 

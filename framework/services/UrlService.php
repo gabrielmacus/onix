@@ -25,4 +25,9 @@ class UrlService
         $url =(isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
         return (!$requestUri)?$url:$url.$_SERVER["REQUEST_URI"];
     }
+
+    static function Join($url,$path)
+    {
+        return rtrim($url,"/")."/".ltrim($path,"/");
+    }
 }
