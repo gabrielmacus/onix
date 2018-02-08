@@ -15,7 +15,7 @@
     <template v-if="errors.<?= $prop ?>">
 
         <div  v-for="(v, k) in errors.<?= $prop ?>" class="validation-error">
-            <p>{{v.text}}</p>
+            <p v-html="v.text"></p>
         </div>
     </template>
 

@@ -131,10 +131,11 @@ class BaseDAO implements IDAO
 
         $collection = $connection->client()->objects;
 
+        /*
         if(!$itemToUpdate = $collection->find(["_id"=>$id])->getNext())
         {
             throw new \Exception("elementDoesntExist",404);
-        }
+        }*/
 
 
         $TypeClass = $this->type;

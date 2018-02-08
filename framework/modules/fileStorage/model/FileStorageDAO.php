@@ -72,6 +72,7 @@ class FileStorageDAO  implements IDAO
 
     function Read(array $query)
     {
+
         //TODO: set query algorithm for plain json
         $results = FileService::ReadFile($this->filePath,true);
 

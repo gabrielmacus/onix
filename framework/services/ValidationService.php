@@ -157,15 +157,25 @@ class ValidationService
      * @param $string
      * @param $pattern
      * @param $emptyIsValid
-     * @param $options
-     * @see http://php.net/manual/es/function.mb-ereg-match.php
+     * @see http://php.net/manual/es/function.preg-match-all.php
      * @return bool
      */
-    static function MatchesExp($string,$pattern,$emptyIsValid=false,$options =null)
+    static function MatchesExp($string,$pattern,$emptyIsValid=false)
     {
+
+
         if(!empty($string) || !$emptyIsValid)
         {
-            return mb_ereg_match($pattern,$string,$options);
+            $pregResult = preg_match_all ($pattern,$string);
+
+            if($pregResult === false && strtoupper(RouteService::GetEnviroment())=="DEVELOPMENT")
+            {
+                FileService::SaveData(APP_DIR."log/error.log","\n{'message':'Preg match error','pattern':'{$pattern}','string':'{$string}'}");
+            }
+
+
+            return ($pregResult === false || $pregResult===0)?false:true;//mb_ereg_match($pattern,$string,$options);
+
         }
 
         return true;

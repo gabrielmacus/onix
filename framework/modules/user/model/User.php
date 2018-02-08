@@ -8,6 +8,9 @@
 
 namespace framework\modules\user\model;
 
+define("USER_INACTIVE",1);
+define("USER_ACTIVE",2);
+define("USER_SUSPENDED",3);
 
 use framework\modules\base\exception\ValidationException;
 use framework\modules\base\model\Base;
@@ -25,12 +28,13 @@ class User extends Base
     {
         $model = parent::Model();
         $model["username"]= ["value"=>""];
+        $model['password']  =  ['value'=>'','attributes'=>['type'=>'password']];
         $model["name"]= ["value"=>""];
         $model["surname"]= ["value"=>""];
         $model["email"]= ["value"=>""];
         $model["superadmin"] = ["value"=>false,"component"=>"select","attributes"=>["options"=>[1=>"yes",0=>"no"]]];
         $model["validation_code"]=["value"=>false,"printable"=>false];
-
+        $model["status"] = ["value"=>USER_INACTIVE,"printable"=>false];
         //Loads permissions to select
         $pDao = new PermissionDAO();
         $permissions = $pDao->Read([]);
@@ -49,10 +53,13 @@ class User extends Base
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = ['MatchesExp','username',['^[a-zA-Z\d_-]{5,20}$'],'invalidUsername'];
+        $rules[] = ['MatchesExp','username',['/^[a-zA-Z\d_-]{5,20}$/'],'invalidUsername'];
         $rules[] = ['IsEmail','email',[],'invalidEmail'];
-        $rules[] = ['MatchesExp','name',['^[a-zA-Z\d \']{2,70}$'],'invalidName']; //TODO: improve regex, should accept accents and else
-        $rules[] = ['MatchesExp','surname',['^[a-zA-Z\d \']{2,70}$'],'invalidSurname']; //TODO: improve regex, should accept accents and else
+
+        $rules[] = ['MatchesExp','name',['/^[\p{L}\d \']{2,70}$/u'],'invalidName']; //TODO: improve regex
+        $rules[] = ['MatchesExp','surname',['/^[\p{L}\d \']{2,70}$/u'],'invalidSurname']; //TODO: improve regex
+
+        $rules[] = ['MatchesExp','password',['/^[\p{L}\d-_#@?¿]{2,70}$/'],'invalidPassword'];
 
 
         if(empty(self::Model()["permission"]["printable"]))
@@ -78,6 +85,8 @@ class User extends Base
 
     private function sendValidationEmail()
     {
+
+
         $config = RouteService::CheckConfiguration(true);
 
         $LangClass = ModuleService::GetModuleLang($this);
@@ -99,11 +108,16 @@ class User extends Base
 
     static function BeforeCreate(Base &$obj)
     {
+        /**
+         * @var User $obj
+         */
 
         parent::BeforeCreate($obj);
 
         //Sets code for user validation
         $obj["validation_code"] = md5(openssl_random_pseudo_bytes(32));
+
+        $obj["password"] = password_hash($obj["password"],PASSWORD_DEFAULT);
 
         $obj->sendValidationEmail();
     }

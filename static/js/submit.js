@@ -8,6 +8,13 @@ var k_r_submitter=/^(?:submit|button|image|reset|file)$/i,k_r_success_contrls=/^
 /**
  * Created by Gabriel on 31/01/2018.
  */
+/**
+ * Process submit event on forms
+ * @param id string Form element id
+ * @param successCallback function
+ * @param errorCallback function
+ * @constructor
+ */
 var FormElement=function (id,successCallback,errorCallback) {
 
 
@@ -24,13 +31,7 @@ var FormElement=function (id,successCallback,errorCallback) {
         }
     })
 
-    /**
-     * Process submit event on forms
-     * @param event
-     * @param successCallback
-     * @param errorCallback
-     *
-     */
+
     document.querySelector("#"+id).onsubmit = function (event) {
 
             event.preventDefault();
@@ -76,6 +77,12 @@ var FormElement=function (id,successCallback,errorCallback) {
                                 return successCallback(data,xhr);
                             }
 
+                            if(data.message)
+                            {
+                                //TODO: replace the default alert popup with a customized one, or the posibility to print the message into an element that was previously passed as an arg
+                                alert(data.message);
+                            }
+
 
 
                         })
@@ -101,7 +108,7 @@ var FormElement=function (id,successCallback,errorCallback) {
                             }
                             else
                             {
-                                //TODO: replace the default alert popup with a customized one
+                                //TODO: replace the default alert popup with a customized one, or the posibility to print the message into an element that was previously passed as an arg
                                 var errorMsg = (typeof error == "object")?error.error:error;
                                 alert(errorMsg);
                             }

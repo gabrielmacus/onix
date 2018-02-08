@@ -59,7 +59,7 @@ class RouteService
 
         $qsDao = new QuickstartDAO();
 
-        if(count($qsDao->Read([])) == 0  && $ControllerClass != "framework\\modules\\quickstart\\controller\\QuickstartController")
+        if($ControllerClass != "framework\\modules\\quickstart\\controller\\QuickstartController" && count($qsDao->Read([])) == 0)
         {
 
             //If initial configuration isn't set
@@ -96,6 +96,9 @@ class RouteService
      */
     static function CheckConfiguration($throwException = false)
     {
+
+
+        //TODO: make cache of current configuration
         $configurationDao = new ConfigurationDAO();
         $configurations =$configurationDao->Read([]);
 
@@ -179,12 +182,11 @@ class RouteService
 
             $view = (file_exists($httpCodesDir."/view/{$code}.php"))?$code:"default";
 
+            $tplEngine->addData(["lang"=>$lang,"code"=>$code,"bodyClass"=>["error-page",$code]]);
+
             $template = $tplEngine->make($view);
 
 
-            $data["lang"] = $lang;
-
-            $data["code"] = $code;
 
             return $template->render($data);
         }
@@ -201,36 +203,10 @@ class RouteService
     }
 
 
-    static function ExceptionHandler(\Exception $e)
+
+    static function GetHTTPMethod()
     {
-
-        $code = ($e->getCode()==0)?500:$e->getCode();
-
-        $data =[];
-        switch (true)
-        {
-            case (is_a($e,"\\framework\\modules\\base\\exception\\ValidationException")):
-
-                $data = ["validation"=>true,"errors"=>json_decode($e->getMessage(),true)];
-                break;
-
-            case (is_a($e,"\\framework\\modules\\base\\exception\\HandledError")):
-
-                 $data  = json_decode($e->getMessage(),true);
-
-                 $data["error"]=$data["message"];
-
-                break;
-
-            default:
-                $data = ["error"=>$e->getMessage()];
-                break;
-        }
-
-        echo \framework\services\RouteService::LoadHttpCode($code,$data);
-
-        exit();
-
+        return filter_input( INPUT_SERVER, 'REQUEST_METHOD' );
     }
 
 

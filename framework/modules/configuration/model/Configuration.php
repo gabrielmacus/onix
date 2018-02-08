@@ -70,11 +70,11 @@ class Configuration extends FileStorage
 
         $rules[] = ['InRange','db_port',[1,65535,true] ,"portRangeAllowed:1,65535"];
 
-        $rules[] = ['MatchesExp','app_name',['^[a-zA-Z0-9_. -]{5,30}$'],'appNameNotAllowed'];
+        $rules[] = ['MatchesExp','app_name',['/^[a-zA-Z0-9_. -]{5,30}$/'],'appNameNotAllowed'];
 
         //$rules[] = ["IsUrl",'app_url',[],'invalidUrl'];
 
-        $rules[] = ["MatchesExp",'site_name',['^[a-zA-Z0-9_. -]{5,40}$',true],'siteNameNotAllowed'];
+        $rules[] = ["MatchesExp",'site_name',['/^[a-zA-Z0-9_. -]{5,40}$/',true],'siteNameNotAllowed'];
 
         $rules[] = ["IsUrl",'site_url',[true],'invalidUrl'];
 

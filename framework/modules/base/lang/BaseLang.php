@@ -58,6 +58,7 @@ class BaseLang
         $this->langArray["es"]["yes"] = "Si";
         $this->langArray["es"]["no"]="No";
         $this->langArray["es"]["selectAnOption"] = "Seleccione una opción";
+        $this->langArray["es"]["errorPageTitle"] = "Parece que hay un problema";
         //Errores
         $this->langArray["es"]["invalidUrl"] = "Formato de url no válido";
         $this->langArray["es"]["invalidEmail"] = "Email no válido";

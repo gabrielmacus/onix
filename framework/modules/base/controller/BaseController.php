@@ -184,15 +184,14 @@ class BaseController
         }
         elseif($view)
         {
+            /**
+             * @var Engine $tplEngine
+             */
             $tplEngine = $this->tplEngine;
 
+            $tplEngine->addData(["configuration"=>RouteService::CheckConfiguration(),"ModelClass"=>ModuleService::GetModuleModel($this),"lang"=>$this->lang,"bodyClass"=>[ModuleService::GetModule($this)]]);
 
-            $response["bodyClass"][] = ModuleService::GetModule($this);
 
-            //For calling static methods, like BuildForm
-            $response["ModelClass"]  = ModuleService::GetModuleModel($this);
-
-            $response["lang"] = $this->lang;
 
             if(!$this->tplEngine->exists($view)):
 

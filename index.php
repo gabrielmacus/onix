@@ -107,6 +107,30 @@ try
      */
 
 
+
+    /**
+     * Other actions
+     */
+
+    $router->any("{controller}/{action}",function ($controllerName,$actionName){
+
+        \framework\services\RouteService::Load($controllerName,$actionName);
+
+
+    });
+
+    $router->any("api/{controller}/{action}",function ($controllerName,$actionName){
+
+        \framework\services\RouteService::Load($controllerName,$actionName,true);
+    });
+
+
+
+
+
+
+
+
 # NB. You can cache the return value from $router->getData() so you don't have to create the routes each request - massive speed gains
     $dispatcher = new Phroute\Phroute\Dispatcher($router->getData());
 
@@ -121,6 +145,6 @@ try
 catch (Exception $e)
 {
 
-    \framework\services\RouteService::ExceptionHandler($e);
+    \framework\services\DebugService::ExceptionHandler($e);
 
 }

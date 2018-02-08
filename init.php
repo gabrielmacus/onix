@@ -48,18 +48,20 @@ function errorHandler($errno, $errstr, $errfile, $errline) {
     if(strtoupper(\framework\services\RouteService::GetEnviroment()) == "DEVELOPMENT")
     {
         $data["time"] = \framework\services\TimeService::now();
+        $data["backtrace"] = debug_backtrace();;
         \framework\services\FileService::SaveData(APP_DIR."log/error.log",json_encode($data)."\n",true);
     }
 
 
 
-    \framework\services\RouteService::ExceptionHandler( new \framework\modules\base\exception\HandledError(json_encode($data),500));
+    \framework\services\DebugService::ExceptionHandler( new \framework\modules\base\exception\HandledError(json_encode($data),500));
 
 }
 
 function shutdownHandler()
 {
     $lasterror = error_get_last();
+
     switch ($lasterror['type'])
     {
         case E_ERROR:
@@ -73,10 +75,11 @@ function shutdownHandler()
         if(strtoupper(\framework\services\RouteService::GetEnviroment()) == "DEVELOPMENT")
         {
             $lasterror["time"] = \framework\services\TimeService::now();
-            \framework\services\FileService::SaveData(APP_DIR."log/error.log",json_encode($lasterror)."\n",true);
+            $lasterror["backtrace"] = debug_backtrace();
+              \framework\services\FileService::SaveData(APP_DIR."log/error.log",json_encode($lasterror)."\n",true);
         }
 
-        \framework\services\RouteService::ExceptionHandler(new \framework\modules\base\exception\HandledError(json_encode($lasterror),500));
+        \framework\services\DebugService::ExceptionHandler(new \framework\modules\base\exception\HandledError(json_encode($lasterror),500));
     }
 }
 // Set user-defined error handler function
