@@ -33,7 +33,7 @@ class UserLang extends BaseLang
         $this->langArray["es"]["userConfirmed"] = "El usuario {0}, ha sido confirmado exitosamente";
         $this->langArray["es"]["userConfirmedTitle"] = "Confirmación de usuario";
         $this->langArray["es"]["password"] = "Contraseña";
-        $this->langArray["es"]["confirmationText"]="Será redirigido al inicio en <span id='timeout'>5</span>";
+        $this->langArray["es"]["confirmationText"]="Será redirigido al inicio en <span id='timeout'>5</span>...";
 
         //Errores
         $this->langArray["es"]["invalidUsername"] = "Nombre de usuario no válido. Debe tener de 5 a 20 caracteres, de los cuales son permitidos letras, números y guiones bajo y medio";

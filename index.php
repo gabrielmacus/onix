@@ -106,7 +106,15 @@ try
      *
      */
 
+    /**
+     * Home
+     */
 
+    $router->get("/",function (){
+
+        \framework\services\RouteService::Load("home","index");
+
+    });
 
     /**
      * Other actions
