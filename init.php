@@ -5,6 +5,10 @@
  * Date: 04/01/2018
  * Time: 23:06
  */
+
+
+
+
 include "vendor/autoload.php";
 
 define("ROOT_DIR",dirname(__FILE__)."/");
@@ -32,3 +36,51 @@ function class_autoload($class)
 
 spl_autoload_register('class_autoload');
 
+
+function errorHandler($errno, $errstr, $errfile, $errline) {
+
+    $data["errno"] = $errno;
+    $data["message"] = $errstr;
+    $data["file"] = $errfile;
+    $data["line"] = $errline;
+
+
+    if(strtoupper(\framework\services\RouteService::GetEnviroment()) == "DEVELOPMENT")
+    {
+        $data["time"] = \framework\services\TimeService::now();
+        \framework\services\FileService::SaveData(APP_DIR."log/error.log",json_encode($data)."\n",true);
+    }
+
+
+
+    \framework\services\RouteService::ExceptionHandler( new \framework\modules\base\exception\HandledError(json_encode($data),500));
+
+}
+
+function shutdownHandler()
+{
+    $lasterror = error_get_last();
+    switch ($lasterror['type'])
+    {
+        case E_ERROR:
+        case E_CORE_ERROR:
+        case E_COMPILE_ERROR:
+        case E_USER_ERROR:
+        case E_RECOVERABLE_ERROR:
+        case E_CORE_WARNING:
+        case E_COMPILE_WARNING:
+        case E_PARSE:
+        if(strtoupper(\framework\services\RouteService::GetEnviroment()) == "DEVELOPMENT")
+        {
+            $lasterror["time"] = \framework\services\TimeService::now();
+            \framework\services\FileService::SaveData(APP_DIR."log/error.log",json_encode($lasterror)."\n",true);
+        }
+
+        \framework\services\RouteService::ExceptionHandler(new \framework\modules\base\exception\HandledError(json_encode($lasterror),500));
+    }
+}
+// Set user-defined error handler function
+set_error_handler("errorHandler");
+register_shutdown_function("shutdownHandler");
+ini_set( "display_errors", "off" );
+error_reporting( E_ALL );

@@ -99,8 +99,6 @@ class BaseController
 
 
 
-
-
         //TODO: may be i can scan the views folder to add template folders
     }
 
@@ -196,26 +194,17 @@ class BaseController
 
             $response["lang"] = $this->lang;
 
+            if(!$this->tplEngine->exists($view)):
 
-//Todo: segui aca
-            /*
-            if($this->tplEngine->exists($view))
-            {
-                $template = $tplEngine->make("{$view}");
-            }
+                $this->tplEngine->setDirectory(FRAMEWORK_DIR."/modules/base/view");
 
+            endif;
 
-            $response["bodyClass"][] = ModuleService::GetModule($this);
-
-            //For calling static methods, like BuildForm
-            $response["ModelClass"]  = ModuleService::GetModuleModel($this);
-
-            $response["lang"] = $this->lang;
-
+            //TODO: make function to load parent view directory if required view isn't available in current module
+            $template = $tplEngine->make("{$view}");
 
             echo $template->render($response);
 
-            */
         }
     }
 
