@@ -11,7 +11,7 @@ namespace framework\modules\permission\controller;
 
 use framework\modules\base\controller\BaseController;
 
-class PermissionController extends BaseController
+class PermissionGroupController extends BaseController
 {
 
 }

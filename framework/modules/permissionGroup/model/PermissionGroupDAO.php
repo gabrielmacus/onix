@@ -11,7 +11,7 @@ namespace framework\modules\permission\model;
 
 use framework\modules\base\model\BaseDAO;
 
-class PermissionDAO extends BaseDAO
+class PermissionGroupDAO extends BaseDAO
 {
 
 }

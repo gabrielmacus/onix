@@ -11,7 +11,7 @@ namespace framework\modules\permission\controller;
 
 use framework\modules\base\controller\BaseController;
 
-class RestrictedAreaController extends BaseController
+abstract class RestrictedAreaController extends BaseController
 {
 
 }

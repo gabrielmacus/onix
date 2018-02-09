@@ -108,6 +108,16 @@ class ModuleService
     }
 
 
+    static function GetAllModules()
+    {
+        $modules=["framework"=>[],"app"=>[]];
+
+        $dirscan  = scandir(FRAMEWORK_DIR."modules") + scandir(APP_DIR."modules");
+
+        var_dump($dirscan);
+    }
+
+
 
 
 }

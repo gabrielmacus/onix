@@ -11,7 +11,7 @@ namespace framework\modules\permission\lang;
 
 use framework\modules\base\lang\BaseLang;
 
-class PermissionLang extends BaseLang
+class PermissionGroupLang extends BaseLang
 {
 
 }

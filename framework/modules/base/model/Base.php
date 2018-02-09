@@ -58,6 +58,7 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
      */
     static function BuildForm(BaseLang $lang,$offset = 0, $length = null,array $excluded =[])
     {
+
         $model = array_filter(
             static::Model(),
             function($v){
@@ -104,12 +105,12 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
      */
     static function CleanModel(Base &$obj)
     {
-
+        $model =static::Model();
 
         foreach ($obj as $k=>$v)
         {
 
-            if(!isset(static::Model()[$k]))
+            if(!isset($model[$k]))
             {
                 unset($obj[$k]);
             }
@@ -124,8 +125,9 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
      */
     static function SetDefaultProperties(Base &$obj)
     {
+        $model = static::Model();
         //Sets default data
-        foreach (static::Model() as $property => $v)
+        foreach ($model as $property => $v)
         {
             if(!isset($obj[$property]))
             {

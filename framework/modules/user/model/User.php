@@ -14,7 +14,7 @@ define("USER_SUSPENDED",3);
 
 use framework\modules\base\exception\ValidationException;
 use framework\modules\base\model\Base;
-use framework\modules\permission\model\PermissionDAO;
+use framework\modules\permission\model\PermissionGroupDAO;
 use framework\services\EmailService;
 use framework\services\LanguageService;
 use framework\services\ModuleService;
@@ -36,7 +36,7 @@ class User extends Base
         $model["validation_code"]=["value"=>false,"printable"=>false];
         $model["status"] = ["value"=>USER_INACTIVE,"printable"=>false];
         //Loads permissions to select
-        $pDao = new PermissionDAO();
+        $pDao = new PermissionGroupDAO();
         $permissions = $pDao->Read([]);
 
 
