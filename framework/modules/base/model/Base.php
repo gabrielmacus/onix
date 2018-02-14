@@ -53,10 +53,11 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
      * @param  $offset int Index of the property to start
      * @param  $length int|null Number of properties that will be printed in the form, starting from the offset
      * @param  $excluded array Excluded properties from the form
-     * @return string
+     * @param $modelName string
+     * @return string Name of the model. Default is 'model'
      * @see $this->Model()
      */
-    static function BuildForm(BaseLang $lang,$offset = 0, $length = null,array $excluded =[])
+    static function BuildForm(BaseLang $lang,$offset = 0, $length = null,array $excluded =[],$modelName ="model")
     {
 
         $model = array_filter(
@@ -75,7 +76,31 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
            $model  = array_slice($model, $offset, $length);
         $tplEngine = new Engine(FRAMEWORK_DIR . "/modules/gui-components/view");
 
+        //Loads module gui-components, in case they exist
+        $currentModule = lcfirst(ModuleService::GetModule(static::class));
+
+        if(is_dir(FRAMEWORK_DIR."/modules/{$currentModule}/view/gui-components/"))
+        {
+
+            $moduleGuiComponentsFolder = (FRAMEWORK_DIR."/modules/{$currentModule}/view/gui-components/");
+        }
+        if(is_dir(APP_DIR."/modules/{$currentModule}/view/gui-components/"))
+        {
+
+            $moduleGuiComponentsFolder = (FRAMEWORK_DIR."/modules/{$currentModule}/view/gui-components/");
+        }
+
+        if(!empty($moduleGuiComponentsFolder))
+        {
+            $tplEngine->addFolder($currentModule,$moduleGuiComponentsFolder);
+        }
+
+
+        $tplEngine->addFolder("components",FRAMEWORK_DIR . "/modules/gui-components/view");
+
+
         ob_start();
+
 
         foreach ($model as $prop => $v) {
 
@@ -83,9 +108,17 @@ class Base implements \ArrayAccess,\JsonSerializable,IPrintable
            {
                $component = (!empty($v["component"])) ? $v["component"] : "input";
 
-               $data = ['lang'=>$lang,'prop' => $prop,'label'=>$lang->i18n($prop)] + (!empty($v["attributes"]) ? $v["attributes"] : []);
+               $data = ['modelName'=>$modelName,'lang'=>$lang,'prop' => $prop,'label'=>$lang->i18n($prop)] + (!empty($v["attributes"]) ? $v["attributes"] : []);
 
-               echo $tplEngine->render($component, $data);
+               if(!empty($moduleGuiComponentsFolder) && $tplEngine->exists("{$currentModule}::{$component}"))
+               {
+                   echo $tplEngine->render("{$currentModule}::{$component}",$data);
+               }
+               elseif($tplEngine->exists($component))
+               {
+                   echo $tplEngine->render($component, $data);
+               }
+
            }
 
         }

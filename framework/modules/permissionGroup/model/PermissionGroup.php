@@ -6,11 +6,7 @@
  * Time: 01:01 PM
  */
 
-namespace framework\modules\permission\model;
-
-define("PERMISSION_OWNER",1);
-define("PERMISSION_GROUP",2);
-define("PERMISSION_ALL",3);
+namespace framework\modules\permissionGroup\model;
 
 use framework\modules\base\model\Base;
 
@@ -26,9 +22,17 @@ class PermissionGroup extends Base
         /**
          * @var array $model["permission_schema"] Array of Permission
          */
-        $model["permission_schema"]=["value"=>[]];
+        $model["permission_schema"]=["value"=>[],'component'=>'permission-schema'];
 
 
         return $model;
     }
+    public function validate()
+    {
+       $rules =  parent::validate();; // TODO: Define validation rules
+
+        return $rules;
+
+    }
+
 }

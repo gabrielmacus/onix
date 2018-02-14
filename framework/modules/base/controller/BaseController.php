@@ -13,6 +13,7 @@ use framework\modules\mongoConnection\model\MongoConnection;
 use framework\services\LanguageService;
 use framework\services\ModuleService;
 use framework\services\RouteService;
+use framework\services\UrlService;
 use League\Plates\Engine;
 use League\Plates\Template\Template;
 
@@ -119,21 +120,35 @@ class BaseController
 
     public function create()
     {
-        $dao = reset($this->daoArray);
+        switch (RouteService::GetHTTPMethod()):
 
-        $ModelClass = ModuleService::GetModuleModel($dao);
+            case 'GET':
 
-        $model = new $ModelClass();
+                $this->sendResponse([],'save');
+                break;
 
-        $model = $model->ObjectFromArray($_POST);
-
-        $dao->Create($model);
-
-        $model =$model->printSerialize($this->lang);
+            case 'POST':
 
 
+                $dao = reset($this->daoArray);
 
-        $this->sendResponse(["results"=>$model]);
+                $ModelClass = ModuleService::GetModuleModel($dao);
+
+                $model = new $ModelClass();
+
+                $model = $model->ObjectFromArray($_POST);
+
+                $dao->Create($model);
+
+                $model =$model->printSerialize($this->lang);
+
+                $this->sendResponse(["results"=>$model]);
+
+
+                break;
+
+        endswitch;
+
 
 
     }

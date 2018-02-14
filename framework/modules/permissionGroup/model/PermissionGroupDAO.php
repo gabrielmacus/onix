@@ -6,7 +6,7 @@
  * Time: 01:01 PM
  */
 
-namespace framework\modules\permission\model;
+namespace framework\modules\permissionGroup\model;
 
 
 use framework\modules\base\model\BaseDAO;

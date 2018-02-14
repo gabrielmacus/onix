@@ -26,7 +26,6 @@ class DebugService
 
         $code = ($e->getCode()==0)?500:$e->getCode();
 
-
         $data =[];
         switch (true)
         {

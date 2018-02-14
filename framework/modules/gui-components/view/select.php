@@ -4,7 +4,7 @@
     <label><?= $label ?></label>
 
 
-    <select @keyup="cleanErrors('<?= $prop ?>')" @change="cleanErrors('<?= $prop ?>')"  v-model="model.<?= $prop ?>"  >
+    <select @keyup="cleanErrors('<?= $prop ?>')" @change="cleanErrors('<?= $prop ?>')"  v-model="<?= $modelName ?>.<?= $prop ?>"  >
 
         <option disabled value=""><?= $lang->i18n("selectAnOption")?></option>
         <?php foreach ($options as $value => $option):?>

@@ -15,14 +15,18 @@ var k_r_submitter=/^(?:submit|button|image|reset|file)$/i,k_r_success_contrls=/^
  * @param errorCallback function
  * @constructor
  */
-var FormElement=function (id,successCallback,errorCallback) {
+var FormElement=function (id,successCallback,errorCallback,vueData) {
 
+    vueData = (!vueData)?{}:vueData;
+
+    vueData.errors={};
+    vueData.model = {};
 
     this.element = document.querySelector("#"+id);
 
     var vue = new Vue({
         el: "#"+id,
-        data: {errors:{},model:{}},
+        data: vueData,
         methods:{
             cleanErrors:function (err) {
 
@@ -62,6 +66,7 @@ var FormElement=function (id,successCallback,errorCallback) {
                      var req = new XMLHttpRequest();
                      req.send(data);*/
 
+                    //TODO:set file uploads
 
                     break;
                 default:

@@ -6,12 +6,12 @@
  * Time: 03:53 PM
  */
 
-namespace framework\modules\permission\controller;
+namespace framework\modules\permissionGroup\controller;
 
 
 use framework\modules\base\controller\BaseController;
 
-abstract class RestrictedAreaController extends BaseController
+abstract class RestrictedArea extends BaseController
 {
 
 }

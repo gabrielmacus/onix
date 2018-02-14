@@ -22,6 +22,10 @@ class ModuleService
      */
     static function GetModule( $object)
     {
+        if(is_string($object))
+        {
+            $object = new $object();
+        }
         $r = new \ReflectionClass(get_class($object));
         $explode = explode("\\",$r->getNamespaceName());
 
@@ -108,13 +112,69 @@ class ModuleService
     }
 
 
-    static function GetAllModules()
+    static function GetRestrictedModules()
     {
+        //TODO: Important task!! Make caching for this function, to avoid overheading
+        $restricted = [];
+
+        $modules = self::GetAllModules();
+
+        foreach ($modules['app'] as $k=>$v)
+        {
+
+            if(is_a('app\\modules\\'.$v.'\\controller\\'.ucfirst($v).'Controller','framework\\modules\\permissionGroup\\controller\\RestrictedArea',true))
+            {
+                $restricted[]=$v;
+            }
+        }
+        foreach ($modules['framework'] as $k=>$v)
+        {
+
+            if(is_a('framework\\modules\\'.$v.'\\controller\\'.ucfirst($v).'Controller','framework\\modules\\permissionGroup\\controller\\RestrictedArea',true))
+            {
+                $restricted[]=$v;
+            }
+        }
+
+        return $restricted;
+    }
+
+    static function GetAllModules($mixed = false)
+    {
+        //TODO: Important task!! Make caching for this function, to avoid overheading
+
         $modules=["framework"=>[],"app"=>[]];
 
-        $dirscan  = scandir(FRAMEWORK_DIR."modules") + scandir(APP_DIR."modules");
+        $dirscanApp  = array_flip(scandir(APP_DIR."modules"));
 
-        var_dump($dirscan);
+        $dirscanFw =  array_flip(scandir(FRAMEWORK_DIR."modules"));
+
+        unset($dirscanApp["."]);
+        unset($dirscanApp[".."]);
+        unset($dirscanFw["."]);
+        unset($dirscanFw[".."]);
+
+
+
+        foreach ($dirscanApp as $dir => $value)
+        {
+            $modules["app"][]=$dir;
+        }
+
+        foreach ($dirscanFw as $dir => $value)
+        {
+            /**
+             * Checks if module is overridden in the app. Given that case, isn't included in framework modules list
+             */
+            if(!isset($dirscanApp[$dir]))
+            {
+                $modules["framework"][]=$dir;
+            }
+        }
+
+
+
+        return ($mixed)?$modules["app"] + $modules["framework"]:$modules;
     }
 
 

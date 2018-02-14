@@ -8,9 +8,10 @@
 
 namespace app\modules\post\controller;
 
-use framework\modules\base\controller\BaseController;
 
-class PostController extends BaseController
+use framework\modules\permissionGroup\controller\RestrictedArea;
+
+class PostController extends RestrictedArea
 {
 
 
